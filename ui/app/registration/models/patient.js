@@ -6,13 +6,33 @@ angular.module('bahmni.registration')
             var calculateAge = function () {
                 if (this.birthdate) {
                     this.age = age.fromBirthDate(this.birthdate);
+                    this.birthdateBS = convertDobAdToBs(this.birthdate);
                 } else {
                     this.age = age.create(null, null, null);
                 }
             };
 
+            var updateAdDate = function() {
+                console.log("inside bs change");
+                if (this.birthdateBS) {
+                    var dateStr = this.birthdateBS.split("-");
+                    var birthdateAD = calenderFunctions.getAdDateByBsDate(calenderFunctions.getNumberByNepaliNumber(dateStr[0]),calenderFunctions.getNumberByNepaliNumber(dateStr[1]), calenderFunctions.getNumberByNepaliNumber(dateStr[2]));
+                    this.birthdate = birthdateAD;
+                    calculateAge();
+                } else {
+                    this.age = age.create(null, null, null);
+                }
+            };
+
+            var convertDobAdToBs = function(dateStr) {
+                var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr).split("-");
+                var bsDate = calenderFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
+                return calenderFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
+            }
+
             var calculateBirthDate = function () {
                 this.birthdate = age.calculateBirthDate(this.age);
+                this.birthdateBS = convertDobAdToBs(this.birthdate);
             };
 
             var fullNameLocal = function () {

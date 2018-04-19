@@ -26,6 +26,22 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             parseDate = function (dateStr) {
                 return Bahmni.Common.Util.DateUtil.parseServerDateToDate(dateStr);
             },
+            parseAdToBsDate = function (dateStr) {
+                console.log("Insud parseBSDate");
+                console.log(dateStr)
+                console.log(Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr))
+                var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr).split("-");
+                var bsDate = calenderFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
+                return calenderFunctions.bsDateFormat("%y %M, %d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
+            },
+            parseAdDobToBsDob = function(dateStr) {
+                console.log("Insud parseBSDate");
+                console.log(dateStr)
+                console.log(Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr))
+                var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr).split("-");
+                var bsDate = calenderFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
+                return calenderFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
+            },
             mapAddress = function (preferredAddress) {
                 return preferredAddress || {};
             },
@@ -46,12 +62,14 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.middleName = openmrsPerson.preferredName.middleName;
                 patient.familyName = openmrsPerson.preferredName.familyName;
                 patient.birthdate = !birthDate ? null : birthDate;
+                patient.birthdateBS = !birthDate ? null : parseAdDobToBsDob(birthDate);
                 patient.age = birthDate ? age.fromBirthDate(birthDate) : null;
                 patient.gender = openmrsPerson.gender;
                 patient.address = mapAddress(openmrsPerson.preferredAddress);
                 patient.birthtime = parseDate(openmrsPerson.birthtime);
                 patient.image = Bahmni.Registration.Constants.patientImageUrlByPatientUuid + openmrsPatient.uuid + "&q=" + new Date().toISOString();
                 patient.registrationDate = Bahmni.Common.Util.DateUtil.parse(openmrsPerson.auditInfo.dateCreated);
+                patient.registrationDateBS = parseAdToBsDate(openmrsPerson.auditInfo.dateCreated);
                 patient.dead = openmrsPerson.dead;
                 patient.isDead = patient.dead;
                 patient.deathDate = parseDate(openmrsPerson.deathDate);

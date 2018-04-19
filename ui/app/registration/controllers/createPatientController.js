@@ -70,6 +70,26 @@ angular.module('bahmni.registration')
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
                 $scope.patientLoaded = true;
+                console.log(calenderFunctions === undefined)
+                $(document).ready(function(){
+                    console.log("readyy")
+                    console.log($("#middleName"))
+                    $("#middleName").nepaliDatePicker({
+                        dateFormat: "%D, %M %d, %y",
+                        closeOnDateSelect: true
+                    });  
+                      $("#middleName").on("select", function (event) {
+    var output = '<p><code>▸ Show event trigger</code></p>';
+    console.log("output");
+});
+
+                });
+                
+            };
+            
+            $scope.convertToBSDate = function(adDate) {
+                console.log("Conversion function called");
+                return adDate;
             };
 
             init();
