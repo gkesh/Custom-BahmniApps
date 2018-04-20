@@ -41,20 +41,6 @@ angular.module('bahmni.registration')
 
             (function () {
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
-
-                $(document).ready(function () {
-                    console.log("here");
-                    var currentDate = new Date();
-                    var currentNepaliDate = calenderFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
-                    var formatedNepaliDate = calenderFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
-                    console.log("formattedNepaliDate="+formatedNepaliDate)
-                    $("#birthdate-bs").nepaliDatePicker({
-                        dateFormat: "%y-%m-%d",
-                        closeOnDateSelect: true,
-                        maxDate: formatedNepaliDate
-                    });
-                });
-
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.then(function (data) {
                     var encountersWithObservations = data.data.results.filter(function (encounter) {

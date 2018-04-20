@@ -1,15 +1,16 @@
 <article class="form-field dob-birthtime-wrapper" id="dob">
     <div class="field-attribute">
-        <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB_AD' | translate}}<span class="asterick" ng-show="::dobMandatory">*</span></label>
+        <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB_AD' | translate}}
+            <span class="asterick" ng-show="::dobMandatory">*</span>
+        </label>
     </div>
     <div class="field-value">
-        <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
-               ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
+        <input id="birthdate" type="date" ng-model="patient.birthdate" max="{{::today}}" ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate')"
+            ng-required="::dobMandatory">
     </div>
     <div class="showOn-desktop-registration">
         <div class="field-value">
-            <input type="checkbox" ng-model="patient.birthdateEstimated" ng-blur="handleUpdate('birthdateEstimated')"
-                   class="estimate-check">
+            <input type="checkbox" ng-model="patient.birthdateEstimated" ng-blur="handleUpdate('birthdateEstimated')" class="estimate-check">
         </div>
         <div class="field-attribute estimated-label">
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
@@ -30,10 +31,41 @@
         <input id="birthtime" type="time" ng-model="patient.birthtime" ng-blur="handleUpdate('birthtime')">
     </div>
     <div class="field-attribute clear-line-fix">
-        <label for="birthdate-bs">{{ ::'REGISTRATION_LABEL_DOB_BS' | translate}}<span class="asterick" ng-show="::dobMandatory">*</span></label>
+        <label for="birthdate-bs">{{ ::'REGISTRATION_LABEL_DOB_BS' | translate}}
+            <span class="asterick" ng-show="::dobMandatory">*</span>
+        </label>
     </div>
     <div class="field-value">
-        <input id="birthdate-bs" type="text" ng-model="patient.birthdateBS"  max="{{::today}}" ng-update = "patient.updateAdDate()"
-               ng-change="patient.updateAdDate()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
+        <input id="birthdate-bs" type="text" ng-model="patient.birthdateBS" max="{{::today}}" ng-update="patient.updateAdDate()"
+            ng-change="patient.updateAdDate()" ng-blur="patient.updateAdDate()" ng-required="::dobMandatory">
     </div>
 </article>
+<script>
+    console.log("janmadin::" + $("#birthdate-bs").val())
+    $(document).ready(function () {
+        console.log("here");
+        var currentDate = new Date();
+        var currentNepaliDate = calenderFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+        var formatedNepaliDate = calenderFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
+        console.log("formattedNepaliDate=" + formatedNepaliDate)
+        $("#birthdate-bs").nepaliDatePicker({
+            dateFormat: "%y-%m-%d",
+            closeOnDateSelect: true,
+            maxDate: formatedNepaliDate
+        });
+        $("#birthdate-bs").on("monthChange", function (event) {
+            // eventLog(event);
+            $("#birthdate").val(event.datePickerData.adDate)
+        });
+
+        $("#birthdate-bs").on("dateChange", function (event) {
+            // eventLog(event);
+            $("#birthdate").val(Bahmni.Common.Util.DateUtil.getDateWithoutTime(event.datePickerData.adDate))
+        });
+
+        $("#birthdate-bs").on("dateSelect", function (event) {
+            // eventLog(event);
+        });
+    });
+
+</script>
