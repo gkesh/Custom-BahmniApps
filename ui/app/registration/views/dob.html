@@ -36,36 +36,26 @@
         </label>
     </div>
     <div class="field-value">
-        <input id="birthdate-bs" type="text" ng-model="patient.birthdateBS" max="{{::today}}" ng-update="patient.updateAdDate()"
+        <input id="birthdate-bs" type="text" ng-model="patient.birthdateBS" ng-update="patient.updateAdDate()"
             ng-change="patient.updateAdDate()" ng-blur="patient.updateAdDate()" ng-required="::dobMandatory">
     </div>
 </article>
 <script>
-    console.log("janmadin::" + $("#birthdate-bs").val())
     $(document).ready(function () {
-        console.log("here");
         var currentDate = new Date();
-        var currentNepaliDate = calenderFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
-        var formatedNepaliDate = calenderFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
-        console.log("formattedNepaliDate=" + formatedNepaliDate)
+        var currentNepaliDate = calendarFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+        var formatedNepaliDate = calendarFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
         $("#birthdate-bs").nepaliDatePicker({
             dateFormat: "%y-%m-%d",
             closeOnDateSelect: true,
             maxDate: formatedNepaliDate
         });
-        $("#birthdate-bs").on("monthChange", function (event) {
-            // eventLog(event);
-            $("#birthdate").val(event.datePickerData.adDate)
-        });
-
-        $("#birthdate-bs").on("dateChange", function (event) {
-            // eventLog(event);
-            $("#birthdate").val(Bahmni.Common.Util.DateUtil.getDateWithoutTime(event.datePickerData.adDate))
-        });
-
         $("#birthdate-bs").on("dateSelect", function (event) {
-            // eventLog(event);
+            $("#birthdate").val(Bahmni.Common.Util.DateUtil.getDateWithoutTime(event.datePickerData.adDate)).trigger('input')
+
         });
     });
 
 </script>
+
+   
