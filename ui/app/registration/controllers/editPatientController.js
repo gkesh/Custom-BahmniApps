@@ -11,7 +11,6 @@ angular.module('bahmni.registration')
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
 
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
-
             var setReadOnlyFields = function () {
                 $scope.readOnlyFields = {};
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");

@@ -13,6 +13,9 @@ angular.module('bahmni.registration')
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
 
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue("enableNepaliCalendar");
+            $scope.enableEnglishCalendar = appService.getAppDescriptor().getConfigValue("enableEnglishCalendar");
+
             $scope.getDeathConcepts = function () {
                 return $http({
                     url: Bahmni.Common.Constants.globalPropertyUrl,

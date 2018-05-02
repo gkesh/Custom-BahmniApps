@@ -1,0 +1,11 @@
+<div id="estimate-dob">
+    <div class="showOn-desktop-registration">
+        <div class="field-value">
+            <input type="checkbox" ng-model="patient.birthdateEstimated" ng-blur="handleUpdate('birthdateEstimated')" class="estimate-check">
+        </div>
+        <div class="field-attribute estimated-label">
+            <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
+        </div>
+    </div>
+    <ng-include src="'views/estimatedDobSmall.html'"></ng-include>
+</div>
