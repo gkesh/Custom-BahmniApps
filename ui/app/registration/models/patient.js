@@ -17,9 +17,6 @@ angular.module('bahmni.registration')
                     var dateStr = this.birthdateBS.split("-");
                     var birthdateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]),calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
                     this.birthdate = birthdateAD;
-                    calculateAge();
-                } else {
-                    this.age = age.create(null, null, null);
                 }
             };
 
@@ -58,7 +55,8 @@ angular.module('bahmni.registration')
                 relationships: [],
                 newlyAddedRelationships: [{}],
                 deletedRelationships: [],
-                calculateBirthDate: calculateBirthDate
+                calculateBirthDate: calculateBirthDate,
+                updateAdDate: updateAdDate
             };
             return _.assign(patient, identifierDetails);
         };

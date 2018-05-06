@@ -1,5 +1,5 @@
 <article class="form-field dob-birthtime-wrapper" id="dob">
-    <div ng-if="enableEnglishCalendar">
+    <div ng-show="!enableNepaliCalendar">
         <div class="field-attribute">
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB_AD' | translate}}
                 <span class="asterick" ng-show="::dobMandatory">*</span>
@@ -9,9 +9,6 @@
             <input id="birthdate" type="date" ng-model="patient.birthdate" max="{{::today}}" ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate')"
                 ng-required="::dobMandatory">
         </div>
-        <div ng-if="!enableNepaliCalendar">
-            <ng-include src="'views/estimatedDob.html'"></ng-include>
-        </div>
     </div>
     <div ng-if="enableNepaliCalendar">
         <div class="field-attribute clear-line-fix">
@@ -20,27 +17,9 @@
             </label>
         </div>
         <div class="field-value">
-            <input id="birthdate-bs" type="text" ng-model="patient.birthdateBS" ng-update="patient.updateAdDate()" ng-change="patient.updateAdDate()"
-                ng-blur="patient.updateAdDate()" ng-required="::dobMandatory">
+            <input class="nepali-datepicker" id="birthdate-bs" type="text" max="{{::npToday}}" ng-model="patient.birthdateBS" ng-change="patient.updateAdDate(); patient.calculateAge();"
+                ng-required="::dobMandatory" npdatepicker>
         </div>
-        <ng-include src="'views/estimatedDob.html'"></ng-include>
     </div>
+    <ng-include src="'views/estimatedDob.html'"></ng-include>
 </article>
-<script>
-
-    setTimeout(function () {
-        $(document).ready(function () {
-            var currentDate = new Date();
-            var currentNepaliDate = calendarFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
-            var formatedNepaliDate = calendarFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
-            $("#birthdate-bs").nepaliDatePicker({
-                dateFormat: "%y-%m-%d",
-                closeOnDateSelect: true,
-                maxDate: formatedNepaliDate
-            });
-            $("#birthdate-bs").on("dateSelect", function (event) {
-                $("#birthdate").val(Bahmni.Common.Util.DateUtil.getDateWithoutTime(event.datePickerData.adDate)).trigger('input')
-            });
-        });
-    }, 400);
-</script>

@@ -31,7 +31,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
                 return calendarFunctions.bsDateFormat("%y %M, %d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
             },
-            parseAdDobToBsDob = function(dateStr) {
+            parseAdToBs = function(dateStr) {
                 var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr).split("-");
                 var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
                 return calendarFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
@@ -56,7 +56,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.middleName = openmrsPerson.preferredName.middleName;
                 patient.familyName = openmrsPerson.preferredName.familyName;
                 patient.birthdate = !birthDate ? null : birthDate;
-                patient.birthdateBS = !birthDate ? null : parseAdDobToBsDob(birthDate);
+                patient.birthdateBS = !birthDate ? null : parseAdToBs(birthDate);
                 patient.age = birthDate ? age.fromBirthDate(birthDate) : null;
                 patient.gender = openmrsPerson.gender;
                 patient.address = mapAddress(openmrsPerson.preferredAddress);
@@ -67,6 +67,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.dead = openmrsPerson.dead;
                 patient.isDead = patient.dead;
                 patient.deathDate = parseDate(openmrsPerson.deathDate);
+                patient.deathDateBS = !patient.deathDate ? null : parseAdToBs(patient.deathDate);
                 patient.causeOfDeath = openmrsPerson.causeOfDeath;
                 patient.birthdateEstimated = openmrsPerson.birthdateEstimated;
                 patient.bloodGroup = openmrsPerson.bloodGroup;
