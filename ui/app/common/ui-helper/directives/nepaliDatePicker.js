@@ -6,12 +6,15 @@ angular.module('bahmni.registration')
             restrict: 'A',
             require: 'ngModel',
             link: function (scope, element, attrs, ngModelCtrl) {
-                element.nepaliDatePicker({
-                    dateFormat: "%y-%m-%d",
-                    closeOnDateSelect: true,
-                    minDate: attrs.min !== '' && attrs.min !== 'undefined' ? attrs.min : null,
-                    maxDate: attrs.max !== '' && attrs.max !== 'undefined' ? attrs.max : null
-                });
+                setTimeout(function(){
+                    element.nepaliDatePicker({
+                        dateFormat: "%y-%m-%d",
+                        closeOnDateSelect: true,
+                        minDate: attrs.min !== '' && attrs.min !== 'undefined' ? attrs.min : null,
+                        maxDate: attrs.max !== '' && attrs.max !== 'undefined' ? attrs.max : null
+                    });
+                }, 400);
+                
                 element.on('dateSelect', function (event) {
                     element.trigger('input');
                 });
