@@ -9,9 +9,9 @@ angular.module('bahmni.registration')
             $scope.actions = {};
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue("displayNepaliDates");
 
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
-
             var setReadOnlyFields = function () {
                 $scope.readOnlyFields = {};
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
@@ -41,7 +41,6 @@ angular.module('bahmni.registration')
 
             (function () {
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
-
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.then(function (data) {
                     var encountersWithObservations = data.data.results.filter(function (encounter) {
