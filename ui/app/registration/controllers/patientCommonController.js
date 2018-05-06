@@ -138,36 +138,9 @@ angular.module('bahmni.registration')
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
 
-            var currentDate = new Date();
-            var currentNepaliDate = calendarFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
-            var formatedNepaliDate = calendarFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
-
-            $scope.initDob = function () {
-                console.log("ola ola ola/////")
-                setTimeout(function () {
-                    $("#birthdate-bs").nepaliDatePicker({
-                        dateFormat: "%y-%m-%d",
-                        closeOnDateSelect: true,
-                        maxDate: formatedNepaliDate
-                    });
-                    $("#birthdate-bs").on("dateSelect", function (event) {
-                        $("#birthdate").val(Bahmni.Common.Util.DateUtil.getDateWithoutTime(event.datePickerData.adDate)).trigger('input')
-                    });
-                }, 400);
-            };
-
-            $scope.dateChanged = function () {
-                console.log("change vayoooo")
-            };
-
             $scope.updateDeathInfo = function () {
                 var dateStr = $scope.patient.deathDateBS.split("-");
-                console.log($scope.patient.deathDateBS)
-                console.log($scope.patient.deathDate)
-                console.log("After update")
                 $scope.patient.deathDate = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-                console.log($scope.patient.deathDate)
-                console.log($scope.patient.deathDateBS)
             };
 
         }]);

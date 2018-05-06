@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.CreatePatientRequestMapper = (function () {
-    function CreatePatientRequestMapper (currentDate) {
+    function CreatePatientRequestMapper(currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -51,7 +51,12 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
         };
 
         this.setImage(patient, openMRSPatient);
-        openMRSPatient.relationships = patient.relationships;
+        if (patient.relationships) {
+            patient.relationships.forEach(function (relationship) {
+                delete relationship.endDateBS;
+            });
+            openMRSPatient.relationships = patient.relationships;
+        }
         return openMRSPatient;
     };
 
