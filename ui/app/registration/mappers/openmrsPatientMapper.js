@@ -31,7 +31,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
                 return calendarFunctions.bsDateFormat("%y %M, %d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
             },
-            parseAdToBs = function(dateStr) {
+            parseAdToBs = function (dateStr) {
                 var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(dateStr).split("-");
                 var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
                 return calendarFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);

@@ -83,7 +83,7 @@
                     <input type="date" ng-model="newRelationship.endDate" ng-disabled="!newRelationship.relationshipType.uuid" />
                 </div>
                 <div ng-if="enableNepaliCalendar" class="field-value">
-                    <input class="nepali-datepicker" npdatepicker type="text" ng-model="newRelationship.endDateBS" ng-change="updateRelationshipDate()">
+                    <input class="nepali-datepicker" npdatepicker type="text" ng-model="newRelationship.endDateBS" ng-change="updateRelationshipDate(newRelationship)">
                 </div>
             </div>
             <div class="col col4">

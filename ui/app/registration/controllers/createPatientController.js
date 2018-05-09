@@ -11,7 +11,6 @@ angular.module('bahmni.registration')
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
-            
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
@@ -69,11 +68,9 @@ angular.module('bahmni.registration')
                 $scope.patient = patient.create();
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
-                $scope.patientLoaded = true;             
+                $scope.patientLoaded = true;
             };
-            
             init();
-
             var prepopulateFields = function () {
                 var fieldsToPopulate = appService.getAppDescriptor().getConfigValue("prepopulateFields");
                 if (fieldsToPopulate) {

@@ -192,11 +192,11 @@ angular.module('bahmni.registration')
                 $scope.patient.relationships = $scope.patient.relationships || [];
             };
 
-            $scope.updateRelationshipDate = function () {
-                if (this.newRelationship.endDateBS) {
-                    var dateStr = this.newRelationship.endDateBS.split("-");
-                    var relationshipEndDateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]),calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-                    this.newRelationship.endDate = relationshipEndDateAD;
+            $scope.updateRelationshipDate = function (newRelationship) {
+                if (newRelationship.endDateBS) {
+                    var dateStr = newRelationship.endDateBS.split("-");
+                    var relationshipEndDateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                    newRelationship.endDate = relationshipEndDateAD;
                 }
             };
 
