@@ -84,8 +84,7 @@
                 <td>{{::result.gender}}</td>
                 <td>{{::result.age}}</td>
                 <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td>
-                <td ng-if="!displayNepaliDates">{{::result.dateCreated | bahmniDate}}</td>
-                <td ng-if="displayNepaliDates">{{::result.dateCreated | npDate}}</td>
+                <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
             </tr>
             </tbody>

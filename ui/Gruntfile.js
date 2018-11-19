@@ -23,8 +23,7 @@ module.exports = function (grunt) {
         'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
         'components/ng-tags-input/ng-tags-input.min.css',
         'components/offline/themes/*.css',
-        'components/jquery-ui/themes/smoothness/jquery-ui.min.css',
-        'components/nepali-date-picker/dist/nepaliDatePicker.min.css'
+        'components/jquery-ui/themes/smoothness/jquery-ui.min.css'
     ];
 
     var libraryJSFiles = [
@@ -67,8 +66,7 @@ module.exports = function (grunt) {
         'components/purl/purl.js',
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
-        'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
-        'components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js'
+        'components/jquery-ui/ui/minified/jquery-ui.custom.min.js'
     ];
 
     try {

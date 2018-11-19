@@ -13,7 +13,6 @@ angular.module('bahmni.registration')
             var allSearchConfigs = appService.getAppDescriptor().getConfigValue("patientSearch") || {};
             var patientSearchResultConfigs = appService.getAppDescriptor().getConfigValue("patientSearchResults") || {};
             maxAttributesFromConfig = !_.isEmpty(allSearchConfigs.programAttributes) ? maxAttributesFromConfig - 1 : maxAttributesFromConfig;
-            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue("displayNepaliDates");
 
             $scope.getAddressColumnName = function (column) {
                 var columnName = "";

@@ -52,7 +52,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
         this.setImage(patient, openMRSPatientProfile);
 
         if (patient.relationships) {
-            patient.relationships.forEach(function (relationship) {
+            patient.relationships.forEach(function(relationship){
                 delete relationship.endDateBS;
             });
             openMRSPatientProfile.relationships = patient.relationships;
