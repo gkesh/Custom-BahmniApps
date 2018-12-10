@@ -22,7 +22,6 @@
                     <div class="field-attribute">
                         <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
                     </div>
-
                     <div class="field-value">
                         <span ng-if="displayNepaliDates" class="uneditable-input text-only">{{patient.registrationDate | npDate}}</span>
                         <span ng-if="!displayNepaliDates" class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
