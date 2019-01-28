@@ -9,6 +9,10 @@
                title="Go to IPD dashboard">
                 <i class="fa fa-bed fa-white"></i>
             </a>
+            <a show-if-privilege="app:mar" ng-click= "displayConfirmationDialog($event)" class="back-btn mar-btn"  ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
+               title="Go to MAR dashboard">
+                <img src="../images/pills.png"/>
+            </a>
             <a class="back-btn-link" id="dashboard-link" accesskey="d" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
                 <img class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
               <span class="patient-info">
@@ -44,6 +48,10 @@
             <a show-if-privilege="app:adt" class="back-btn" ng-click= "displayConfirmationDialog($event)" ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{visitHistory.activeVisit.uuid}}/"
                title="Go to IPD Dashboard">
                 <i class="fa fa-bed fa-white"></i>
+            </a>
+            <a show-if-privilege="app:mar" ng-click= "displayConfirmationDialog($event)" class="back-btn mar-btn"  ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
+               title="Go to MAR dashboard">
+                <img src="../images/pills.png"/>
             </a>
             <div class="desktop-menu fl">
                 <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
