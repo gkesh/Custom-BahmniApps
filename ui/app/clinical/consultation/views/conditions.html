@@ -16,12 +16,13 @@
                 <input ng-model="consultation.condition.concept.name" type="text" name="name" id="name"
                        bahmni-autocomplete source="getDiagnosis"
                        on-select="getAddConditionMethod()"
-                       ng-change="consultation.condition.clearConcept()">
+                       ng-change="consultation.condition.clearConcept()"
+                       ng-class="{illegalValue: !(consultation.condition.concept.name || consultation.condition.isEmpty())}">
                 <button type="button" ng-model="consultation.condition.isNonCoded"
                         class="small-btn accept-btn" id="accept-button"
                         ng-click="consultation.condition.toggleNonCoded()"
                         ng-class="{
-                                                illegalValue: consultation.condition.isIllegalValue(),
+                                                illegalValue: !consultation.condition.isValidConcept(),
                                                 active: consultation.condition.isNonCoded
                                             }"
                         ng-disabled="consultation.condition.concept.uuid">
@@ -31,10 +32,14 @@
             <div class="col col2">
                 <buttons-radio class="btn-group" model='consultation.condition.status'
                                options='conditionsStatuses'
-                               ng-class="{'illegalValue': !consultation.condition.status && consultation.condition.concept.name}"/>
+                               ng-class="{'illegalValue': !(consultation.condition.status || consultation.condition.isEmpty())}"/>
             </div>
             <div class="col col3">
-                <input date-converter class="form-field" type="date"
+                <input ng-if="enableNepaliCalendar" class="nepali-datepicker" type="text" max="{{::npToday}}" ng-model="consultation.condition.onSetDateNepaliDate" 
+                    ng-change="handleNepaliDateUpdate(consultation)"  
+                    consultation="consultation"
+                    npdatepicker>
+                <input date-converter class="form-field" type="date" ng-if="!enableNepaliCalendar"
                        max="{{todayWithoutTime}}"
                        ng-model="consultation.condition.onSetDate">
                 <button type="button" toggle="consultation.condition.showNotes" class="comment-toggle fr"
@@ -69,6 +74,13 @@
                 <span class="condition-header">{{'CONDITION_LIST_CONDITIONS_ACTIVE'|translate}}</span>
                 <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
             </h2>
+            <div class="row" ng-if="filterConditions('ACTIVE').length == 0">
+                <div class="col col1">
+                    <div class="diagnosis-name">
+                        {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
+                    </div>
+                </div>
+            </div>
             <div ng-repeat="condition in filterConditions('ACTIVE')" class="table-body">
                 <ng-include src="'consultation/views/conditionRow.html'"/>
             </div>
@@ -78,6 +90,13 @@
                 <span class="condition-header">{{'CONDITION_LIST_CONDITIONS_HISTORY_OF'|translate}}</span>
                 <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
             </h2>
+            <div class="row" ng-if="filterConditions('HISTORY_OF').length == 0">
+                <div class="col col1">
+                    <div class="diagnosis-name">
+                        {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
+                    </div>
+                </div>
+            </div>
             <div ng-repeat="condition in filterConditions('HISTORY_OF')" class="table-body">
                 <ng-include src="'consultation/views/conditionRow.html'"/>
             </div>
@@ -97,6 +116,13 @@
                 </div>
             </div>
             <div ng-show="toggles.expandInactive">
+                <div class="row" ng-if="filterConditions('INACTIVE').length == 0">
+                    <div class="col col1">
+                        <div class="diagnosis-name">
+                            {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
+                        </div>
+                    </div>
+                </div>
                 <div ng-repeat="condition in filterConditions('INACTIVE')" class="table-body">
                     <ng-include src="'consultation/views/conditionRow.html'"/>
                 </div>

@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.programs')
-    .directive('programs', ['programService', '$state', 'spinner',
-        function (programService, $state, spinner) {
+    .directive('programs', ['programService', '$state', 'spinner', 'appService',
+        function (programService, $state, spinner, appService) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
                     if (_.isEmpty(patientPrograms.activePrograms) && _.isEmpty(patientPrograms.endedPrograms)) {
                         $scope.$emit("no-data-present-event");
@@ -45,6 +46,9 @@ angular.module('bahmni.common.displaycontrol.programs')
                     } else {
                         return attribute.value;
                     }
+                };
+                $scope.isIncluded = function (attributeType, program) {
+                    return !(program.program && _.includes(attributeType.excludeFrom, program.program.name));
                 };
                 var isDateFormat = function (format) {
                     return format == "org.openmrs.customdatatype.datatype.DateDatatype";

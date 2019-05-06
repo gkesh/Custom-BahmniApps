@@ -14,7 +14,8 @@
         </div>
         <div>
       <span class="time-stamp">
-        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+        <span class="date" ng-if="displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | npDate}}</span>
+        <span class="date" ng-if="!displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
       </span>
             <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
                 <provider-directive creator-name="{{diagnosis.firstDiagnosis.creatorName}}" provider-name="{{provider.name}}"></provider-directive>
@@ -31,7 +32,8 @@
         </div>
         <div>
       <span class="time-stamp">
-        <span class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
+            <span class="date" ng-if="displayNepaliDates">{{diagnosis.diagnosisDateTime | npDate}}</span>
+        <span class="date" ng-if="!displayNepaliDates">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
       </span>
             <span class="provider" ng-repeat="provider in diagnosis.providers">
                 <provider-directive creator-name="{{diagnosis.creatorName}}" provider-name="{{provider.name}}"></provider-directive>
@@ -44,7 +46,7 @@
     <button id="deleteDiagnosis-{{$index}}" ng-confirm-click="deleteDiagnosis(diagnosis)" ng-if="canDeleteDiagnosis" class="small-btn row-remover remove-diagnosis" confirm-message="Are you sure you want to remove this diagnosis?"><span class="fa fa-remove"></span></button>
     <button id="addCondition-{{$index}}" ng-click="addDiagnosisToConditions(diagnosis)"
             ng-disabled="cannotBeACondition(diagnosis)"
-            ng-if="!isRetrospectiveMode()"
+            ng-if="!isRetrospectiveMode() && !hideConditions"
             class="small-btn add-condition">
         <span>Add as condition</span>
     </button>

@@ -2,11 +2,12 @@
 
 angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
-    '$stateParams', '$bahmniCookieStore', 'offlineService', 'printer', 'configurationService',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService, printer, configurationService) {
+    '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', function (currentSearchType) {
                 _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
@@ -75,6 +76,10 @@ angular.module('bahmni.common.patientSearch')
             return _.includes(Bahmni.Common.PatientSearch.Constants.nameHeading, heading);
         };
 
+        $scope.isHeadingOfOrderPlacedOn = function (heading) {
+            return _.isEqual(Bahmni.Common.PatientSearch.Constants.orderPlacedOnHeading, heading);
+        };
+
         $scope.getPrintableHeadings = function (patients) {
             var headings = $scope.getHeadings(patients);
             var printableHeadings = headings.filter(function (heading) {
@@ -90,9 +95,6 @@ angular.module('bahmni.common.patientSearch')
         };
 
         var mapExtensionToSearchType = function (appExtn) {
-            if (offlineService.isOfflineApp() && appExtn.offline == false) {
-                return;
-            }
             return {
                 name: appExtn.label,
                 display: appExtn.extensionParams.display,
@@ -114,13 +116,6 @@ angular.module('bahmni.common.patientSearch')
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
                 getPatientCount(currentSearchType);
-            } else {
-                if (offlineService.isOfflineApp()) {
-                    var duration = appService.getAppDescriptor().getConfigValue('recentPatientsDuration');
-                    patientService.getRecentPatients(duration).then(function (response) {
-                        $scope.search.updatePatientList(response.data.pageOfResults);
-                    });
-                }
             }
         };
 

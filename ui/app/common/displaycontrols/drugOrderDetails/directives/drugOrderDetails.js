@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrderDetails')
-    .directive('drugOrderDetails', ['treatmentService', 'spinner', 'treatmentConfig', '$q', function (treatmentService, spinner, treatmentConfig, $q) {
+    .directive('drugOrderDetails', ['treatmentService', 'spinner', 'treatmentConfig', '$q', 'appService', function (treatmentService, spinner, treatmentConfig, $q, appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var init = function () {
                 return $q.all([treatmentService.getAllDrugOrdersFor($scope.patient.uuid, $scope.section.dashboardConfig.drugConceptSet, undefined, undefined, $scope.enrollment),
                     treatmentConfig()])
@@ -23,9 +24,11 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
             $scope.columnHeaders = [
                 "DRUG_DETAILS_DRUG_NAME",
                 "DRUG_DETAILS_DOSE_INFO",
+                "DRUG_DETAILS_QUANTITY_TEXT",
                 "DRUG_DETAILS_ROUTE",
                 "DRUG_DETAILS_FREQUENCY",
                 "DRUG_DETAILS_START_DATE",
+                "DRUG_DETAILS_INSTRUCTIONS_TEXT",
                 "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS"
             ];
 

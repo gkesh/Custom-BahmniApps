@@ -8,13 +8,17 @@ angular.module('bahmni.clinical')
             $scope.toggles = {
                 expandInactive: false
             };
-            $scope.consultation.condition = new Bahmni.Common.Domain.Condition({});
+            $scope.consultation.condition = $scope.consultation.condition || new Bahmni.Common.Domain.Condition({});
             $scope.conditionsStatuses = {
                 'CONDITION_LIST_ACTIVE': 'ACTIVE',
                 'CONDITION_LIST_INACTIVE': 'INACTIVE',
                 'CONDITION_LIST_HISTORY_OF': 'HISTORY_OF'
             };
             $scope.consultation.followUpConditions = $scope.consultation.followUpConditions || [];
+
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
 
             _.forEach($scope.consultation.conditions, function (condition) {
                 condition.isFollowUp = _.some($scope.consultation.followUpConditions, {value: condition.uuid});
@@ -77,6 +81,7 @@ angular.module('bahmni.clinical')
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
                 $scope.allowOnlyCodedDiagnosis = appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
                                                  appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
+                $scope.hideConditions = appService.getAppDescriptor().getConfigValue("hideConditions");
                 addPlaceHolderDiagnosis();
                 diagnosisService.getDiagnosisConceptSet().then(function (result) {
                     $scope.diagnosisMetaData = result.data.results[0];
@@ -117,8 +122,10 @@ angular.module('bahmni.clinical')
                 var invalidPastDiagnoses = $scope.consultation.pastDiagnoses.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
                 });
+                var isValidConditionForm = ($scope.consultation.condition.isEmpty() || $scope.consultation.condition.isValid());
                 return {
-                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 && invalidSavedDiagnosesFromCurrentEncounter.length === 0,
+                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0
+                    && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
                     errorMessage: $scope.errorMessage
                 };
             };
@@ -208,7 +215,7 @@ angular.module('bahmni.clinical')
                     }
                 }
                 if (existingCondition.status != condition.status) {
-                    existingCondition.endDate = condition.onSetDate || DateUtil.today();
+                    existingCondition.onSetDate = condition.onSetDate || DateUtil.today();
                     existingCondition.status = condition.status;
                 }
                 existingCondition.additionalDetail = condition.additionalDetail;
@@ -229,7 +236,7 @@ angular.module('bahmni.clinical')
             };
             $scope.markAs = function (condition, status) {
                 condition.status = status;
-                condition.endDate = DateUtil.today();
+                condition.onSetDate = DateUtil.today();
                 expandInactiveOnNewInactive(condition);
             };
             var clearCondition = function () {
@@ -360,6 +367,16 @@ angular.module('bahmni.clinical')
 
             $scope.isValid = function (diagnosis) {
                 return diagnosis.isValidAnswer() && diagnosis.isValidOrder() && diagnosis.isValidCertainty();
+            };
+
+            $scope.handleNepaliDateUpdate = function (consultation) {
+                var conditionDateNepali = consultation.condition.onSetDateNepaliDate;
+                if (conditionDateNepali) {
+                    var dateStr = conditionDateNepali.split("-");
+                    var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                    var date = new Date(dateAD);
+                    consultation.condition.onSetDate = dateAD;
+                }
             };
 
             $scope.isRetrospectiveMode = retrospectiveEntryService.isRetrospectiveMode;

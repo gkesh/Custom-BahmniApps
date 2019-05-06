@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.CreatePatientRequestMapper = (function () {
-    function CreatePatientRequestMapper(currentDate) {
+    function CreatePatientRequestMapper (currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -29,7 +29,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                             givenName: patient.givenName,
                             middleName: patient.middleName,
                             familyName: patient.familyName,
-                            display: patient.givenName + " " + patient.familyName,
+                            display: patient.givenName + (patient.familyName ? " " + patient.familyName : ""),
                             "preferred": false
                         }
                     ],

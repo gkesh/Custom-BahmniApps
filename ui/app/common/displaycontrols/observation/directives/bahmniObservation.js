@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        function (observationsService, appService, $q, spinner, $rootScope) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService',
+        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $scope.print = $rootScope.isBeingPrinted || false;
 
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
@@ -39,9 +40,15 @@ angular.module('bahmni.common.displaycontrol.observation')
                         }
                     }
 
-                    $scope.bahmniObservations =
-                        new Bahmni.Common.DisplayControl.Observation.ConstructFunctions().createDummyObsGroupForObservationsForForm($scope.bahmniObservations);
+                    var formObservations = _.filter(observations, function (obs) {
+                        return obs.formFieldPath;
+                    });
+
+                    if (formObservations.length > 0) {
+                        formHierarchyService.build($scope.bahmniObservations);
+                    }
                 };
+
                 var fetchObservations = function () {
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);
@@ -57,7 +64,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 mapObservation(response.data, $scope.config);
                             });
                         } else if ($scope.enrollment) {
-                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope).then(function (response) {
+                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsIgnoreList).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         } else {

@@ -275,9 +275,16 @@ Bahmni.Common.Util.DateUtil = {
     getISOString: function (date) {
         return date ? moment(date).toDate().toISOString() : null;
     },
-    npToday: function(){
+    npToday: function () {
         var currentDate = this.now();
         var currentNepaliDate = calendarFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
         return calendarFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
+    },
+    isValid: function (date) {
+        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        return moment(dateRepresentation).isValid();
+    },
+    isBeforeTime: function (time, otherTime) {
+        return moment(time, 'hh:mm a').format('YYYY-MM-DD');
     }
 };

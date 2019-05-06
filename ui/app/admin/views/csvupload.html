@@ -1,5 +1,8 @@
 <div nv-file-drop uploader="uploader" filters="queueLimit, customFilter">
 
+    <div class="note-warning" >
+        Note: If Provider details aren't provided in the CSV, logged in user will be considered as the Provider.
+    </div>
     <div class="csv-upload-page">
         <div>
             <section class="primary-section-grid">
@@ -81,7 +84,8 @@
                     <tbody>
                         <tr ng-repeat="item in importedItems">
                             <td><strong>{{ item.originalFileName }}</strong></td>
-                            <td>{{ item.startTime | bahmniDateTime }}</td>
+                            <td ng-if="!displayNepaliDates">{{ item.startTime | bahmniDateTime }}</td>
+                            <td ng-if="displayNepaliDates">{{ item.startTime | npDateTime }}</td>
                             <td>{{ item.status }}</td>
                             <td>{{ item.errorMessage }}</td>
                             <td><a ng-if="item.hasError()" ng-href="{{item.errorFileUrl()}}">Error File</a></td>

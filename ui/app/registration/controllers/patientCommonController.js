@@ -8,14 +8,18 @@ angular.module('bahmni.registration')
             var personAttributes = [];
             var caste;
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
+            $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
+            $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
             $scope.showBirthTime = appService.getAppDescriptor().getConfigValue("showBirthTime") != null
                 ? appService.getAppDescriptor().getConfigValue("showBirthTime") : true;  // show birth time by default
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
+            $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue("enableNepaliCalendar");
+            $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
 
             $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue("enableNepaliCalendar");
             $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
-            
             $scope.getDeathConcepts = function () {
                 return $http({
                     url: Bahmni.Common.Constants.globalPropertyUrl,
@@ -142,6 +146,5 @@ angular.module('bahmni.registration')
                 var dateStr = $scope.patient.deathDateBS.split("-");
                 $scope.patient.deathDate = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
             };
-
         }]);
 

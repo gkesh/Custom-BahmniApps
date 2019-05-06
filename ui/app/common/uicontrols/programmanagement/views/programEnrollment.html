@@ -44,11 +44,12 @@
                         </label>
                     </div>
                     <div class="field-value">
-                        <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true">
+                        <input ng-show="!enableNepaliCalendar" type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true">
+                        <input ng-if="enableNepaliCalendar" ng-change="updateAdDate(programEnrollmentDateBs)" class="nepali-datepicker" type="text" max="{{npToday}}" ng-model="programEnrollmentDateBs" ng-required="true" npdatepicker>
                     </div>
                 </article>
 
-                <article class="fl" ng-repeat="attribute in programAttributeTypes">
+                <article class="fl" ng-repeat="attribute in programAttributeTypes" ng-if="isIncluded(attribute)">
                     <attribute-types target-model="patientProgramAttributes" attribute="attribute"
                                      is-form="true"></attribute-types>
                 </article>

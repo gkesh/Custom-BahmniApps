@@ -1,31 +1,23 @@
 <div class="relationships-container form">
-    <div class="history-relationship">
-        <div class="row" ng-repeat="relationship in patient.relationships track by $index" ng-hide="relationship.voided">
-            <div class="col col1">
-                <span>{{getRelationshipTypeForDisplay(relationship)}}</span>
-            </div>
-            <div class="col col2">
-                <span>{{getRelatedToPersonForDisplay(relationship)}}</span>
-                <span ng-if="isPatientRelationship(relationship)">
-                    <a ng-click="openPatientDashboardInNewTab(relationship)">
-                        <i class="fa fa-external-link"></i>
-                    </a>
-                </span>
-            </div>
-            <div class="col col3">
-                <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
-                <span ng-if="displayNepaliDates">
-                    {{relationship.endDate | npDate}}
-                </span>
-                <span ng-if="!displayNepaliDates">
-                    {{relationship.endDate | bahmniDate}}
-                </span>
-
-            </div>
-            <div class="col col4">
-                <button type="button" class="small-btn row-remover" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn">
-                    <span class="fa fa-remove"></span>
-                </button>
+        <div class="history-relationship">
+            <div class="row" ng-repeat="relationship in patient.relationships track by $index" ng-hide="relationship.voided">
+                <div class="col col1">
+                    <span>{{getRelationshipTypeForDisplay(relationship)}}</span>
+                </div>
+                <div class="col col2">
+                    <span>{{getRelatedToPersonForDisplay(relationship)}}</span>
+                    <span ng-if="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
+                </div>
+                <div class="col col3">
+                    <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
+                    <span ng-if="displayNepaliDates">{{relationship.endDate | npDate}}</span>
+                    <span ng-if="!displayNepaliDates">{{relationship.endDate | bahmniDate}}</span>
+                </div>
+                <div class="col col4">
+                    <button type="button" class="small-btn row-remover" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn">
+                        <span class="fa fa-remove"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -70,14 +62,17 @@
 
                     <input type="hidden" ng-model="newRelationship.personB" />
                 </div>
-                <span class="asterick showOn-desktop">*</span>
-                <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>
-                <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
-            </div>
-            <div class="col col3 form-field">
-                <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
-                <div class="field-attribute showOn-small-screen">
-                    <label>Till Date</label>
+                <div class="col col3 form-field">
+                    <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
+                    <div class="field-attribute showOn-small-screen">
+                        <label>Till Date</label>
+                    </div>
+                    <div ng-show="!enableNepaliCalendar"  class="field-value">
+                        <input type="date" ng-model="newRelationship.endDate" ng-disabled="!newRelationship.relationshipType.uuid"/>
+                    </div>
+                    <div ng-show="enableNepaliCalendar"  class="field-value">
+                        <input class="nepali-datepicker" npdatepicker type="text" ng-model="newRelationship.endDateBS" ng-change="updateRelationshipDate(newRelationship)">
+                    </div>
                 </div>
                 <div ng-show="!enableNepaliCalendar" class="field-value">
                     <input type="date" ng-model="newRelationship.endDate" ng-disabled="!newRelationship.relationshipType.uuid" />

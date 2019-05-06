@@ -15,7 +15,6 @@ angular.module('bahmni.registration')
         function ($window, $scope, $rootScope, spinner, patientService, providerService, appService) {
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue("displayNepaliDates");
             $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue("enableNepaliCalendar");
-
             $scope.addPlaceholderRelationship = function () {
                 $scope.patient.newlyAddedRelationships.push({});
             };
@@ -96,7 +95,7 @@ angular.module('bahmni.registration')
                     }
                     relationship.content = getPatientGenderAndAge(patients[0]);
                     var personUuid = patients[0]['uuid'];
-                    var personName = patients[0]['givenName'] + " " + patients[0]['familyName'];
+                    var personName = patients[0]['givenName'] + (patients[0]['familyName'] ? " " + patients[0].familyName : "");
 
                     relationship.personB = {'display': personName, 'uuid': personUuid};
                 });
@@ -192,11 +191,11 @@ angular.module('bahmni.registration')
                 $scope.patient.relationships = $scope.patient.relationships || [];
             };
 
-            $scope.updateRelationshipDate = function () {
-                if (this.newRelationship.endDateBS) {
-                    var dateStr = this.newRelationship.endDateBS.split("-");
-                    var relationshipEndDateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]),calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-                    this.newRelationship.endDate = relationshipEndDateAD;
+            $scope.updateRelationshipDate = function (newRelationship) {
+                if (newRelationship.endDateBS) {
+                    var dateStr = newRelationship.endDateBS.split("-");
+                    var relationshipEndDateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                    newRelationship.endDate = relationshipEndDateAD;
                 }
             };
 
