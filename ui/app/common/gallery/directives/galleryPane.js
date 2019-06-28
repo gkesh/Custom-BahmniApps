@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bahmni.common.gallery')
-    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations', 'ngDialog',
-        function ($rootScope, $document, observationsService, encounterService, spinner, configurations, ngDialog) {
+    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations', 'ngDialog', 'appService',
+        function ($rootScope, $document, observationsService, encounterService, spinner, configurations, ngDialog, appService) {
             var $body = $document.find('body');
-
             $rootScope.$on('$stateChangeStart', function () {
                 close();
             });
 
             var link = function ($scope, element) {
                 $scope.galleryElement = element;
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $body.prepend($scope.galleryElement).addClass('gallery-open');
 
                 keyboardJS.on('right', function () {
@@ -133,7 +133,7 @@ angular.module('bahmni.common.gallery')
                             });
                         });
                     }
-                    ngDialog.openConfirm({template: '../common/gallery/views/gallery.html', scope: $scope, closeByEscape: true, className: 'gallery-dialog ngdialog-theme-default'});
+                    ngDialog.openConfirm({template: '../common/gallery/views/gallery.html', scope: $scope, closeByEscape: true});
                 };
 
                 var fetchObsRelationship = function (image) {

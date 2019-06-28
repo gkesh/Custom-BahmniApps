@@ -2,30 +2,28 @@
 
 describe('PatientCommonController', function () {
 
-    var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService, $state;
+    var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-    var $compile;
 
-    beforeEach(module('bahmni.registration', 'ngDialog'));
+    beforeEach(module('bahmni.registration'));
 
     beforeEach(module(function ($provide) {
         $provide.value('patientAttributeService', {});
     }));
 
     beforeEach(
-        inject(function ($controller, _$httpBackend_, $rootScope, _$compile_, _$state_) {
+        inject(function ($controller, _$httpBackend_, $rootScope) {
             $aController = $controller;
             $httpBackend = _$httpBackend_;
             scope = $rootScope.$new();
-            $state = _$state_;
             rootScope = $rootScope;
-            $compile = _$compile_;
         })
     );
 
 
     beforeEach(function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+
         rootScope.genderMap = {};
 
         scope.patient = {};
@@ -51,46 +49,6 @@ describe('PatientCommonController', function () {
 
     });
 
-    it('checks that the confirmation popup is prompted when the home button is clicked and the config is enabled and current Page is not the Registration Second Page', function () {
-        scope.showSaveConfirmDialogConfig = true;
-        $state.current.name = "patient.new";
-        scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
-        scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
-        var element = angular.element("<a ng-click='onHomeNavigate()'>");
-        var compiled = $compile(element)(scope);
-        compiled.triggerHandler('click');
-        expect(scope.onHomeNavigate).toHaveBeenCalled();
-        expect(scope.showSaveConfirmDialogConfig).toBe(true);
-        expect($state.current.name).not.toBe("patient.visit");
-        scope.confirmationPrompt();
-        expect(scope.confirmationPrompt).toHaveBeenCalled();
-    });
-
-    it('checks that the confirmation popup is not prompted when the home button is clicked and the config is disabled', function () {
-        scope.showSaveConfirmDialogConfig = false;
-        scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
-        scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
-        var element = angular.element("<a ng-click='onHomeNavigate()'>");
-        var compiled = $compile(element)(scope);
-        compiled.triggerHandler('click');
-        expect(scope.onHomeNavigate).toHaveBeenCalled();
-        expect(scope.showSaveConfirmDialogConfig).not.toBe(true);
-        expect(scope.confirmationPrompt).not.toHaveBeenCalled();
-    });
-
-it('checks that the confirmation popup is not prompted on the Registration second page when the home button is clicked and the config is enabled', function () {
-        scope.showSaveConfirmDialogConfig = true;
-        $state.current.name = "patient.visit";
-        scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
-        scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
-        var element = angular.element("<a ng-click='onHomeNavigate()'>");
-        var compiled = $compile(element)(scope);
-        compiled.triggerHandler('click');
-        expect(scope.onHomeNavigate).toHaveBeenCalled();
-        expect(scope.showSaveConfirmDialogConfig).toBe(true);
-        expect($state.current.name).toBe("patient.visit");
-        expect(scope.confirmationPrompt).not.toHaveBeenCalled();
-    });
 
     it("should make calls for reason for death global property and concept sets", function () {
         $httpBackend.expectGET(Bahmni.Common.Constants.globalPropertyUrl);

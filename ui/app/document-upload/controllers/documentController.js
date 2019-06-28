@@ -3,9 +3,10 @@
 angular.module('opd.documentupload')
     .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService',
         'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll',
-        '$translate', 'messagingService',
+        '$translate', 'messagingService', 'appService',
         function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService,
-                  $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService) {
+                  $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService, appService) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -15,7 +16,6 @@ angular.module('opd.documentupload')
             var locationUuid = sessionService.getLoginLocationUuid();
 
             $scope.visits = [];
-            $scope.fileTypeConcepts = [];
             $scope.toggleGallery = true;
             $scope.conceptNameInvalid = false;
 
@@ -107,6 +107,31 @@ angular.module('opd.documentupload')
                 });
             };
 
+            var setDefaultConcept = function (topLevelConcept) {
+                var concept;
+                if (topLevelConcept.setMembers.length === 1) {
+                    concept = topLevelConcept.setMembers[0];
+                    $scope.defaultConcept = {
+                        'concept': {
+                            uuid: concept.uuid,
+                            name: concept.name.name,
+                            editableName: concept.name.name
+                        }, 'value': concept.name.name
+                    };
+                } else if ($rootScope.appConfig.defaultOption) {
+                    concept = topLevelConcept.setMembers.filter(function (member) {
+                        return member.name.name === $rootScope.appConfig.defaultOption;
+                    })[0];
+                    $scope.defaultConcept = {
+                        'concept': {
+                            uuid: concept.uuid,
+                            name: concept.name.name,
+                            editableName: concept.name.name
+                        }, 'value': concept.name.name
+                    };
+                }
+            };
+
             var getTopLevelConcept = function () {
                 if ($rootScope.appConfig.topLevelConcept === null) {
                     topLevelConceptUuid = null;
@@ -118,20 +143,9 @@ angular.module('opd.documentupload')
                         v: "custom:(uuid,setMembers:(uuid,name:(name)))"
                     }
                 }).then(function (response) {
-                    if (response.data.results[0].setMembers && response.data.results[0].setMembers.length > 0) {
-                        response.data.results[0].setMembers.forEach(function (concept) {
-                            var conceptToAdd = {
-                                'concept': {
-                                    uuid: concept.uuid,
-                                    name: concept.name.name,
-                                    editableName: concept.name.name
-                                }
-                            };
-                            $scope.fileTypeConcepts.push(conceptToAdd);
-                        });
-                    }
                     var topLevelConcept = response.data.results[0];
                     topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
+                    setDefaultConcept(topLevelConcept);
                 });
             };
 
@@ -200,6 +214,7 @@ angular.module('opd.documentupload')
                     spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
                         var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
                         var savedFile = visit.addFile(fileUrl);
+                        $scope.setConceptOnFile(savedFile, $scope.defaultConcept);
                         $scope.toggleGallery = true;
                     }, function () {
                         messagingService.showMessage("error");
@@ -214,22 +229,27 @@ angular.module('opd.documentupload')
                 }
             };
 
-            $scope.toInitFileConcept = function (file) {
-                if (file.concept && file.concept.editableName) {
-                    return;
+            $scope.setConceptOnFile = function (file, selectedItem) {
+                if (selectedItem) {
+                    file.concept = Object.create(selectedItem.concept);
+                    file.changed = true;
+                    if (!$scope.$$phase) {
+                        $scope.$apply();
+                    }
                 }
-                file.concept = Object.create($scope.fileTypeConcepts[0].concept);
-                file.changed = true;
+            };
+
+            $scope.onEditConcept = function (file) {
+                return function () {
+                    file.concept.name = undefined;
+                    file.concept.uuid = undefined;
+                };
             };
 
             $scope.onConceptSelected = function (file) {
-                var selectedItem = _.find($scope.fileTypeConcepts, function (fileType) {
-                    return _.get(fileType, 'concept.name') == _.get(file, 'concept.editableName');
-                });
-                if (selectedItem && selectedItem.concept) {
-                    file.concept = Object.create(selectedItem.concept);
-                }
-                file.changed = true;
+                return function (selectedItem) {
+                    $scope.setConceptOnFile(file, selectedItem);
+                };
             };
 
             $scope.enableSaveButtonOnCommentChange = function (file, visit) {

@@ -28,13 +28,6 @@ angular.module('bahmni.clinical')
                 var url = "/" + $stateParams.configName + (board.url ? urlPrefix + "/" + board.url : urlPrefix);
                 var extensionParams = board.extensionParams;
                 var queryParams = [];
-                if ($stateParams.programUuid) {
-                    var programParams = {
-                        "programUuid": $stateParams.programUuid,
-                        "enrollment": $stateParams.enrollment
-                    };
-                    extensionParams = _.merge(programParams, extensionParams);
-                }
                 angular.forEach(extensionParams, function (extensionParamValue, extensionParamKey) {
                     queryParams.push(extensionParamKey + "=" + extensionParamValue);
                 });

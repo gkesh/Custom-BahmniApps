@@ -1,16 +1,13 @@
 'use strict';
 
 describe('conceptDropdown', function () {
-    var conceptService, compile, scope, $q, translateFilter;
+    var conceptService, compile, scope, $q;
     beforeEach(function () {
         module("bahmni.common.uicontrols");
         module('ngHtml2JsPreprocessor');
         module(function ($provide) {
             conceptService = jasmine.createSpyObj('conceptService', ['getAnswersForConceptName', 'getAnswers']);
             $provide.value('conceptService', conceptService);
-            translateFilter = jasmine.createSpy('translateFilter');
-            $provide.value('translateFilter', translateFilter);
-
         });
 
         inject(function ($compile, $rootScope, _$q_) {

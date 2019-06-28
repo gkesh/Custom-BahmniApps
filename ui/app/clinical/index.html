@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
+        <link rel="stylesheet" href="../components/nepali-date-picker/dist/nepaliDatePicker.min.css"/>
 
         <!-- build:css clinical.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
@@ -46,7 +47,7 @@
         <script src="../components/angular-bindonce/bindonce.min.js"></script>
         <script src="../components/angular-recursion/angular-recursion.min.js"></script>
         <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
-        <script src="../components/moment/min/moment-with-locales.min.js"></script>
+        <script src="../components/moment/min/moment.min.js"></script>
         <script src="../components/select2/select2.min.js"></script>
         <script src="../components/angular-ui-select2/src/select2.js"></script>
         <script src="../components/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -70,6 +71,7 @@
 
         <script src="../components/bahmni-form-controls/helpers.js"></script>
         <script src="../components/bahmni-form-controls/bundle.js"></script>
+        <script src="../components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
 
         <!-- build:js clinical.min.js -->
         <script src="../common/constants.js"></script>
@@ -85,7 +87,6 @@
         <script src="../common/util/dateUtil.js"></script>
         <script src="../common/util/ageUtil.js"></script>
         <script src="../common/util/arrayUtil.js"></script>
-        <script src="../common/util/formFieldPathUtil.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>
         <script src="../common/util/modernizr.tests.js"></script>
         <script src="../common/util/iosLabelFix.js"></script>
@@ -190,6 +191,7 @@
         <script src="../common/ui-helper/directives/focusOnInputErrors.js"></script>
         <script src="../common/ui-helper/directives/fixedFirstColumn.js"></script>
         <script src="../common/ui-helper/directives/assignHeight.js"></script>
+        <script src="../common/ui-helper/directives/nepaliDatePicker.js"></script>
 
         <script src="../common/attributeTypes/directives/attributeTypes.js"></script>
         <script src="../common/domain/mappers/attributeTypeMapper.js"></script>
@@ -222,6 +224,7 @@
         <script src="../common/concept-set/directives/imageUpload.js"></script>
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/concept-set/controller/nepaliDateFieldObservationController.js"></script>
 
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/models/observation.js"></script>
@@ -246,7 +249,6 @@
         <script src="../common/displaycontrols/observation/init.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
         <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
-        <script src="../common/displaycontrols/observation/services/formRecordTreeBuildService.js"></script>
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
         <script src="../common/displaycontrols/observation/controllers/allObservationDetailsController.js"></script>
         <script src="../common/displaycontrols/prescription/init.js"></script>
@@ -393,6 +395,7 @@
         <script src="consultation/controllers/clinicalController.js"></script>
         <script src="consultation/controllers/consultationSummaryController.js"></script>
         <script src="consultation/controllers/diagnosisController.js"></script>
+        <script src="consultation/controllers/conditionsController.js"></script>
         <script src="consultation/controllers/investigationController.js"></script>
         <script src="consultation/controllers/orderController.js"></script>
         <script src="consultation/controllers/treatmentController.js"></script>
@@ -462,7 +465,6 @@
         <script src="../common/displaycontrols/dashboard/controllers/patientDashboardDiagnosisController.js"></script>
 
         <script src="../common/displaycontrols/forms/init.js"></script>
-        <script src="../common/displaycontrols/forms/controllers/versionedFormController.js"></script>
         <script src="../common/displaycontrols/forms/controllers/patientDashboardAllFormsController.js"></script>
         <script src="../common/displaycontrols/forms/directives/formsTable.js"></script>
         <script src="../clinical/consultation/services/visitFormService.js"></script>

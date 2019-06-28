@@ -190,7 +190,6 @@ describe("clinicalAppConfigService", function () {
             $provide.value('$stateParams', $stateParams);
             $provide.value('urlHelper', urlHelper);
             $provide.value('loadConfigService', loadConfigService);
-            $provide.value('$translate', jasmine.createSpyObj("$translate", ['instant']));
         }));
 
 
@@ -313,7 +312,6 @@ describe("clinicalAppConfigService", function () {
             $provide.value('$stateParams', $stateParams);
             $provide.value('urlHelper', urlHelper);
             $provide.value('loadConfigService', loadConfigService);
-            $provide.value('$translate', jasmine.createSpyObj("$translate", ['instant']));
         }));
 
 

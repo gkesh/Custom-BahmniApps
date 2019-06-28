@@ -14,19 +14,28 @@
                              <span class="patient-gender-age" ng-bind-html="::patientAttributeTypes"></span>
                              <span class="patient-estimated-text" ng-if="::patient.birthdateEstimated"> (est.)</span>
                              <span class="patient-birth-time" ng-show="::patient.birthtime">
-                                 <span>{{ 'TIME_OF_BIRTH_LABEL'|translate }}</span>
+                                 <span>Time of Birth</span>
                                  <span ng-bind-html="::patient.birthtime | date:'hh:mm a'"></span>
                              </span>
                              <span class="patient-address">
                                  {{::addressLine}}
                              </span>
-                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
+                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted">                    
+                                <p ng-bind-html="::bedDetails.bedNumber"></p>
+                            </i>
+
                          </div>
                      </td>
                 </tr>
                 <tr ng-if="::showBirthDate" >
-                    <td class="name">{{ 'DOB_LABEL' | translate }}</td>
-                    <td class="value">{{::patient.birthdate | bahmniDate}}
+                    <td class="name">Date of Birth</td>
+                    <td class="value">
+                        <span ng-if="!displayNepaliDates">
+                            {{::patient.birthdate | bahmniDate}}
+                        </span>
+                        <span ng-if="displayNepaliDates">
+                                {{::patient.birthdate | npDate}}
+                        </span>
                         <span ng-if="::patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
                     </td>
                 </tr>
@@ -34,10 +43,11 @@
                     ng-show="::config.patientAttributes.length" ng-class="attribute">
                     <td class="name">{{::patient[attribute].label}}</td>
                     <td class="value" ng-if="::!patient[attribute].isDateField">{{::(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
-                    <td class="value" ng-if="::patient[attribute].isDateField">{{::patient[attribute].value | bahmniDate}}</td>
+                    <td class="value" ng-if="::patient[attribute].isDateField && !displayNepaliDates">{{::patient[attribute].value | bahmniDate}}</td>
+                    <td class="value" ng-if="::patient[attribute].isDateField && displayNepaliDates">{{::patient[attribute].value | npDate}}</td>
                 </tr>
                 <tr ng-if="::relationships && relationships.length > 0">
-                    <td>{{ 'PATIENT_PROFILE_RELATIONSHIPS_LABEL'|translate }}</td>
+                    <td>Relationships</td>
                 </tr>
                 <tr ng-repeat="relationship in relationships track by relationship.uuid">
                     <td class="name relationshipType" ng-if="::relationship.personA.uuid === patient.uuid">{{::relationship.relationshipType.aIsToB}}</td>

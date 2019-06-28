@@ -71,7 +71,6 @@ angular.module('bahmni.registration')
                 expandSectionsWithDefaultValue();
                 $scope.patientLoaded = true;
             };
-
             init();
 
             var prepopulateFields = function () {

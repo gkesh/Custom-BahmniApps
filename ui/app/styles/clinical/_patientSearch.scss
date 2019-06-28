@@ -12,7 +12,7 @@
 }
 
 .tab-content{
-  overflow:auto;
+  overflow:hidden;
   padding:5px;
   background: $white;
   border: 1px solid $lightGray;
@@ -51,15 +51,6 @@
       cursor: not-allowed;
     }
   }
-
-  .patient-list-spinner {
-    display: none;
-    top: 32px;
-    margin-top: -28px;
-    position: relative;
-    min-height: 2em;
-  }
-
 }
 
 .patient-search-wrapper {
@@ -91,7 +82,7 @@
       }
     }
   }
-
+  
   .tabs {
     margin-top: 5px;
   }
@@ -118,7 +109,7 @@
         }
         @media screen and (max-width: 1013px) {
           width: 136px;
-        }
+        }        
         @media screen and (max-width: 1005px) {
           width: 135px;
         }

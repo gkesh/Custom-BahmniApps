@@ -33,7 +33,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     return appService.initApp('clinical', {
                         'app': true,
                         'extension': true
-                    }, config, ["dashboard", "visit", "medication"]);
+                    }, config, ["dashboard", "visit", "medication", "observation"]);
                 };
 
                 var mergeFormConditions = function () {

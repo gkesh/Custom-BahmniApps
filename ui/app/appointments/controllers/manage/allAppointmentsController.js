@@ -1,17 +1,15 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AllAppointmentsController', ['$scope', '$state', 'appService', '$rootScope',
-        function ($scope, $state, appService, $rootScope) {
+    .controller('AllAppointmentsController', ['$scope', '$state', 'appService',
+        function ($scope, $state, appService) {
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
             $scope.isSearchEnabled = false;
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-            $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
 
             $scope.navigateTo = function (viewName) {
                 $scope.currentTab = viewName;
                 var path = 'home.manage.appointments.' + viewName;
-                $state.params.appointmentsData = $rootScope.appointmentsData;
                 $state.go(path, $state.params, {reload: false});
             };
 

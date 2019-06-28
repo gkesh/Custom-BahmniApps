@@ -4,6 +4,7 @@ angular.module('bahmni.admin')
     .controller('CSVUploadController', ['$scope', 'FileUploader', 'appService', 'adminImportService', 'spinner',
         function ($scope, FileUploader, appService, adminImportService, spinner) {
             var adminCSVExtension = appService.getAppDescriptor().getExtensionById("bahmni.admin.csv");
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var patientMatchingAlgorithm = adminCSVExtension.extensionParams.patientMatchingAlgorithm || "";
             var urlMap = {
                 "concept": {name: "Concept", url: Bahmni.Common.Constants.conceptImportUrl},
@@ -14,10 +15,6 @@ angular.module('bahmni.admin')
                 "drug": {name: "Drug", url: Bahmni.Common.Constants.drugImportUrl},
                 "labResults": {name: "Lab Results", url: Bahmni.Common.Constants.labResultsImportUrl},
                 "referenceterms": {name: "Reference Terms", url: Bahmni.Common.Constants.referenceTermsImportUrl},
-                "updateReferenceTerms": {
-                    name: "Add new Reference Terms to Existing Concepts",
-                    url: Bahmni.Common.Constants.updateReferenceTermsImportUrl
-                },
                 "relationship": {name: "Relationship Information", url: Bahmni.Common.Constants.relationshipImportUrl}
             };
             var fileUploaderOptions = {

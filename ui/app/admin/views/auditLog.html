@@ -1,32 +1,33 @@
 <div>
     <div class="audit-log-filter">
         <header>
-            <p>{{ 'FILTERS_HEADER_LABEL'|translate }}</p>
+            <p>Filters</p>
         </header>
         <article id="startFrom">
           <form>
               <p>
-                  <label for="startFrom">{{ 'START_FROM_FILTER_LABEL'|translate }} </label>
-                  <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                  <label for="startFrom">Start From </label>
+                  <input ng-show="!enableNepaliCalendar" id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                  <input ng-if="enableNepaliCalendar" ng-change="updateAdDate(startDateBs)" class="nepali-datepicker" type="text" ng-model="startDateBs" max="{{::npToday}}" npdatepicker>
                   <input id="startTime" type="time" ng-model="startDate">
               </p>
               <p>
-                  <label for="username">{{ 'USERNAME_FILTER_LABEL'|translate }} </label>
-                  <input type="text" id="username" ng-model="username" placeholder="{{ 'ENTER_USERNAME_PLACEHOLDER'|translate }}">
+                  <label for="username">Username </label>
+                  <input type="text" id="username" ng-model="username" placeholder="Enter Username">
               </p>
               <p>
-                  <label for="patientId">{{ 'PATIENT_ID_FILTER_LABEL'|translate }} </label>
-                  <input type="text" id="patientId" ng-model="patientId" placeholder="{{ 'ENTER_PATIENT_ID_PLACEHOLDER'|translate }}">
+                  <label for="patientId">Patient ID </label>
+                  <input type="text" id="patientId" ng-model="patientId" placeholder="Enter Patient ID">
               </p>
               <button class="button" type="submit" ng-click="runReport()"><i class="fa fa-filter" aria-hidden="true"></i>
-                  {{ 'FILTER_BUTTON_LABEL'|translate }}
+                  Filter
               </button>
           </form>
         </article>
     </div>
     <div class="audit-log-table">
         <header>
-            <p>{{ 'AUDIT_LOG_TABLE_HEADER_LABEL'|translate }}</p>
+            <p>Audit Log Events</p>
         </header>
         <table id="auditLogTable" border="0">
             <thead>
@@ -43,7 +44,8 @@
             <tbody ng-repeat="log in logs">
             <tr>
                 <td>{{:: log.auditLogId | translate }}</td>
-                <td class="audit-log-created-at">{{:: log.dateCreated | translate }}</td>
+                <td class="audit-log-created-at" ng-if="!displayNepaliDates">{{:: log.dateCreated | translate }}</td>
+                <td class="audit-log-created-at" ng-if="displayNepaliDates">{{:: log.dateCreated | npDateTime }}</td>
                 <td>{{:: log.eventType | translate }}</td>
                 <td>{{:: log.userId | translate }}</td>
                 <td>{{:: log.patientId | translate }}</td>

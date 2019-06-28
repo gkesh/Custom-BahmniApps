@@ -32,13 +32,9 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getDispositionActions = function (finalDispositionActions, dispositions, action) {
-            var copyOfFinalDispositionActions = _.cloneDeep(finalDispositionActions);
-            var dispositionPresent = _.find(dispositions, action);
-            if (dispositionPresent) {
-                copyOfFinalDispositionActions.push(dispositionPresent);
-            }
-            return copyOfFinalDispositionActions;
+        var findAction = function (dispositions, action) {
+            var undoDischarge = _.find(dispositions, action);
+            return undoDischarge || {'name': ''};
         };
 
         var filterDispositionActions = function (dispositions, visitSummary) {
@@ -47,15 +43,16 @@ angular.module('bahmni.clinical')
                 return defaultDispositions.indexOf(disposition.name) < 0;
             });
             var isVisitOpen = visitSummary ? _.isEmpty(visitSummary.stopDateTime) : false;
+
             if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[0]});
+                finalDispositionActions.push(findAction(dispositions, {name: "Undo Discharge"}));
             }
             else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[2]});
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[3]});
+                finalDispositionActions.push(findAction(dispositions, { name: "Transfer Patient"}));
+                finalDispositionActions.push(findAction(dispositions, { name: "Discharge Patient"}));
             }
             else {
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[1]});
+                finalDispositionActions.push(findAction(dispositions, { name: "Admit Patient"}));
             }
             return finalDispositionActions;
         };

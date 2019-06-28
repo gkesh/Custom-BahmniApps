@@ -16,6 +16,10 @@ angular.module('bahmni.clinical')
             };
             $scope.consultation.followUpConditions = $scope.consultation.followUpConditions || [];
 
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
+
             _.forEach($scope.consultation.conditions, function (condition) {
                 condition.isFollowUp = _.some($scope.consultation.followUpConditions, {value: condition.uuid});
             });
@@ -129,25 +133,30 @@ angular.module('bahmni.clinical')
 
             var mapConcept = function (result) {
                 return _.map(result.data, function (concept) {
-                    var response = {
-                        value: concept.matchedName || concept.conceptName,
+                    if (concept.conceptName === concept.matchedName) {
+                        return {
+                            value: concept.matchedName,
+                            concept: {
+                                name: concept.conceptName,
+                                uuid: concept.conceptUuid
+                            },
+                            lookup: {
+                                name: concept.conceptName,
+                                uuid: concept.conceptUuid
+                            }
+                        };
+                    }
+                    return {
+                        value: concept.matchedName + "=>" + concept.conceptName,
                         concept: {
                             name: concept.conceptName,
                             uuid: concept.conceptUuid
                         },
                         lookup: {
-                            name: concept.matchedName || concept.conceptName,
+                            name: concept.matchedName,
                             uuid: concept.conceptUuid
                         }
                     };
-
-                    if (concept.matchedName && concept.matchedName !== concept.conceptName) {
-                        response.value = response.value + " => " + concept.conceptName;
-                    }
-                    if (concept.code) {
-                        response.value = response.value + " (" + concept.code + ")";
-                    }
-                    return response;
                 });
             };
 
@@ -358,6 +367,16 @@ angular.module('bahmni.clinical')
 
             $scope.isValid = function (diagnosis) {
                 return diagnosis.isValidAnswer() && diagnosis.isValidOrder() && diagnosis.isValidCertainty();
+            };
+
+            $scope.handleNepaliDateUpdate = function (consultation) {
+                var conditionDateNepali = consultation.condition.onSetDateNepaliDate;
+                if (conditionDateNepali) {
+                    var dateStr = conditionDateNepali.split("-");
+                    var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                    var date = new Date(dateAD);
+                    consultation.condition.onSetDate = dateAD;
+                }
             };
 
             $scope.isRetrospectiveMode = retrospectiveEntryService.isRetrospectiveMode;

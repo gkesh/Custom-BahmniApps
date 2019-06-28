@@ -41,19 +41,6 @@ angular.module('bahmni.registration')
             });
         };
 
-        var searchByNameOrIdentifier = function (query, limit) {
-            return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
-                method: "GET",
-                params: {
-                    q: query,
-                    s: "byIdOrName",
-                    limit: limit,
-                    loginLocationUuid: sessionService.getLoginLocationUuid()
-                },
-                withCredentials: true
-            });
-        };
-
         var get = function (uuid) {
             return patientServiceStrategy.get(uuid);
         };
@@ -85,7 +72,6 @@ angular.module('bahmni.registration')
             create: create,
             update: update,
             get: get,
-            updateImage: updateImage,
-            searchByNameOrIdentifier: searchByNameOrIdentifier
+            updateImage: updateImage
         };
     }]);

@@ -1,6 +1,6 @@
 'use strict';
 angular.module('bahmni.common.logging')
-    .service('auditLogService', ['$http', '$translate', 'configurationService', function ($http, $translate, configurationService) {
+    .service('auditLogService', ['$http', '$translate', 'appService', 'configurationService', function ($http, $translate, appService, configurationService) {
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         var convertToLocalDate = function (date) {
@@ -12,7 +12,9 @@ angular.module('bahmni.common.logging')
             params = params || {};
             return $http.get(Bahmni.Common.Constants.auditLogUrl, {params: params}).then(function (response) {
                 return response.data.map(function (log) {
-                    log.dateCreated = convertToLocalDate(log.dateCreated);
+                    if (!appService.getAppDescriptor().getConfigValue('displayNepaliDates')) {
+                        log.dateCreated = convertToLocalDate(log.dateCreated);
+                    }
                     var entity = log.message ? log.message.split("~")[1] : undefined;
                     log.params = entity ? JSON.parse(entity) : entity;
                     log.message = log.message.split("~")[0];

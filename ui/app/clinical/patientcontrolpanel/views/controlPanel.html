@@ -4,16 +4,12 @@
 
         <div class="patient-info">
             <div>
-                <a class="patient-img" href="{{::getDashboardLink()}}" ng-click="changeContext($event)">
+                <a class="patient-img" href="{{getDashboardLink()}}" ng-click="changeContext($event)">
                     <img class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
                 </a>
                 <div class="patient-handler">
                     <h4 class="patient-name">
-                        <a href="{{::getDashboardLink()}}" ng-click="changeContext($event)">
-                            <span bo-text="patient.name"></span>
-                        </a>
-                        <span ng-show="patient.genderText" ng-bind-html="' ('+patient.genderText+')'"></span>
-                    </h4>
+                    <a href="{{getDashboardLink()}}" ng-click="changeContext($event)"><span bo-text="patient.name"></span></a><span ng-show="patient.genderText" ng-bind-html="' ('+patient.genderText+')'"></span></h4>
                     <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>
                 </div>
             </div>
@@ -23,7 +19,7 @@
             <span class="ward" bo-text="bedDetails.wardName + ' ' + bedDetails.bedNumber"></span>
         </div>
 
-        <h2>{{'CONTROL_PANEL_ACTIONS'|translate}}</h2>
+        <h2>Actions</h2>
         <ul>
             <li class="btn-patient-doc" ng-click="$parent.toggleControlPanel()">
                 <div bm-gallery patient="patient" access-impression="true">
@@ -35,7 +31,7 @@
             </li>
         </ul>
 
-        <h2>{{'CONTROL_PANEL_OTHER_ACTIONS'|translate}}</h2>
+        <h2>Other Actions</h2>        
         <ul class="bahmni-home">
             <li><a class="header-logo" href="../home/index.html"><i class="fa fa-home"></i>{{"BAHMNI_HOME_TRANSLATION_KEY"| translate}}</a></li>
         </ul>
@@ -54,12 +50,14 @@
             <li ng-hide="isInEditEncounterMode()">
                 <label for="retro-date-widget"  class="retro-date-widget" >{{"ENTERING_DATA_FOR_TRANSLATION_KEY"| translate}}</label>
                 <br>
-                <label class="retro-date-widget disabled-date">{{(consultation.encounterDateTime || today)| bahmniDate}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="!displayNepaliDates">{{(consultation.encounterDateTime || today)| bahmniDate}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="displayNepaliDates">{{(consultation.encounterDateTime || today)| npDate}}</label>
             </li>
             <li ng-show="isInEditEncounterMode()">
                 <label for="retro-date-widget"  class="retro-date-widget" >{{"EDITITNG_DATA_FOR_ENCOUNTER_TRANSLATION_KEY" | translate}}</label>
                 <br>
-                <label class="retro-date-widget disabled-date">{{consultation.encounterDateTime| bahmniDateTime}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="!displayNepaliDates">{{consultation.encounterDateTime| bahmniDateTime}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="displayNepaliDates">{{consultation.encounterDateTime| npDateTime}}</label>
             </li>
         </ul>
         <ul show-if-privilege="{{encounterProviderPrivilege}}" ng-if="isValidProvider() && !isInEditEncounterMode()">

@@ -214,7 +214,6 @@ Bahmni.ConceptSet.Observation.prototype = {
     isButtonRadio: function () {
         return this.conceptUIConfig.buttonRadio;
     },
-
     isComplex: function () {
         return this.concept.dataType === "Complex";
     },

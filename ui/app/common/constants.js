@@ -110,7 +110,6 @@ Bahmni.Common = Bahmni.Common || {};
         drugImportUrl: BAHMNI_CORE + "/admin/upload/drug",
         labResultsImportUrl: BAHMNI_CORE + "/admin/upload/labResults",
         referenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms",
-        updateReferenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms/new",
         relationshipImportUrl: BAHMNI_CORE + "/admin/upload/relationship",
         conceptSetExportUrl: BAHMNI_CORE + "/admin/export/conceptset?conceptName=:conceptName",
         patientImportUrl: BAHMNI_CORE + "/admin/upload/patient",
@@ -178,9 +177,9 @@ Bahmni.Common = Bahmni.Common || {};
         locationPickerPrivilege: 'app:clinical:locationpicker',
         onBehalfOfPrivilege: 'app:clinical:onbehalf',
         nutritionalConceptName: 'Nutritional Values',
-        messageForNoObservation: "NO_OBSERVATIONS_CAPTURED",
+        messageForNoObservation: "No observations captured for this visit.",
         messageForNoDisposition: "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY",
-        messageForNoFulfillment: "NO_FULFILMENT_MESSAGE",
+        messageForNoFulfillment: "No observations captured for this order.",
         reportsUrl: "/bahmnireports",
         uploadReportTemplateUrl: "/bahmnireports/upload",
         ruledOutdiagnosisStatus: "Ruled Out Diagnosis",
@@ -198,7 +197,7 @@ Bahmni.Common = Bahmni.Common || {};
         passwordPolicyUrl: BAHMNI_CORE + "/globalProperty/passwordPolicyProperties",
         fulfillmentConfiguration: "fulfillment",
         fulfillmentFormSuffix: " Fulfillment Form",
-        noNavigationLinksMessage: "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE",
+        noNavigationLinksMessage: "No navigation links available.",
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1 + "/encountertype",
@@ -252,10 +251,7 @@ Bahmni.Common = Bahmni.Common || {};
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
-        privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
-        patientFormsUrl: BAHMNI_CORE + "/patient/{patientUuid}/forms",
-        defaultPossibleRelativeSearchLimit: 10,
-        forms2Type: "formsV2"
+        privilegeRequiredErrorMessage: "User is logged in but doesn't have the relevant privilege"
     };
 })();
 

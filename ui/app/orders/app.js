@@ -71,8 +71,7 @@ angular
             $bahmniTranslateProvider.init({app: 'orders', shouldMerge: true});
         }]
 
-).run(['backlinkService', '$window', function (backlinkService, $window) {
-    moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+).run(['backlinkService', function (backlinkService) {
     backlinkService.addUrl({label: "Patient Search", url: "../home/"});
 }]);
 

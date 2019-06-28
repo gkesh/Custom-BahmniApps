@@ -176,6 +176,7 @@ category:  Layout - sections
     top: 46px;
     width: 220px;
     padding: 10px 10px 0;
+    right: 385px;
     li{
       display: block;
       padding-bottom: 10px;
@@ -1197,6 +1198,15 @@ h2.section-title.section-title-pivot{
     }
   }
 
+}
+
+.mar-btn {
+  padding: 5px 10px 3px !important;
+  
+  img {
+    height: 31px;
+    float: left;
+  }
 }
 
 

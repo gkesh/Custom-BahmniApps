@@ -6,6 +6,7 @@ describe('retrospectiveEntryService', function () {
     beforeEach(module('bahmni.common.domain'));
     beforeEach(module(function ($provide) {
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
+
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
     }));
 

@@ -162,7 +162,7 @@
                     <label class="control-label"></label>
                     <div class="field-value">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                                  placeholder="{{ 'NOTES_LABEL'|translate }}" tabindex="1" msd-elastic>
+                                  placeholder="Notes" tabindex="1" msd-elastic>
                         </textarea>
                     </div>
 
@@ -211,15 +211,35 @@
                     <div ng-switch-when="buttonselect">
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/buttonSelectType.html'"></div>
                     </div>
-
+                    
                     <div ng-switch-when="datetime">
-                        <datetimepicker model="observation.value"
-                                        observation="::observation"
-                                        ng-blur="handleUpdate()"
-                                        allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
-                                        show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        <div data-ng-controller="nepaliDateFieldObservationController" ng-if="enableNepaliCalendar">
+                            <div class="field-value">
+                                <input class="nepali-datepicker" ng-init="initializeNepaliDateTime(observation)"  type="text" max="{{::npToday}}" ng-model="observation.nepaliDate" 
+                                    ng-change="handleNepaliDateTimeUpdate(observation); updateNepaliDateTime(observation);"  
+                                    observation="::observation"
+                                    allow-future-dates="{{::observation.allowFutureDate}}"
+                                    npdatepicker>
+                            </div>
+                            <div>
+                                <input type="time" ng-change="updateNepaliDateTime(observation)" observation="::observation" ng-class= "{'illegalValue': !isValid(observation, selectedTime)}" ng-model="observation.selectedTime" ng-disabled="observation.disabled" />
+                            </div>
+                            <datetimepicker model="observation.value" hidden
+                                observation="::observation"
+                                ng-blur="handleUpdate()"
+                                allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
+                                show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        </div>
+                        <div ng-if="!enableNepaliCalendar">
+                            <datetimepicker model="observation.value"
+                                observation="::observation"
+                                ng-blur="handleUpdate()"
+                                allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
+                                show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        </div>
                     </div>
-
+                 
+                    
                     <div ng-switch-when="grid">
                         <div ng-repeat="member in ::observation.groupMembers track by $index" class="grid-row"
                              ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">
@@ -329,7 +349,7 @@
                     <label class="control-label"></label>
                     <div class="field-value" ng-if="observation.showComment">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                                  placeholder="{{ 'NOTES_LABEL'|translate }}" msd-elastic>
+                                  placeholder="Notes" msd-elastic>
                         </textarea>
                     </div>
                 </div>
@@ -397,13 +417,20 @@
                 </button>
             </span>
             </legend>
-            <div ng-if="::observation.isComputed()">
+            <div ng-if="::observation.isComputed()" bm-pop-over>
+                <div class=" concept-tooltip-description" bm-pop-over-target
+                     ng-if="::getBooleanResult(observation.concept.description)">
+                    <i class="fa fa-caret-down"></i>
+                    <span class="details" ng-bind-html="::observation.concept.description"></span>
+                </div>
                 <label class="control-label" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                       ng-if="::getBooleanResult(observation.primaryObs.concept.description)"></i>
+                       ng-if="::getBooleanResult(observation.concept.description)"></i>
                 </label>
-                <span>{{observation.value}}</span>
+                <div class="compuptedValue" ng-class="{'is-abnormal': observation.abnormalObs.value}">
+                    {{observation.value}}
+                </div>
             </div>
             <div class="form-group" ng-if="::!observation.isComputed()">
                 <div ng-hide="isCollapsibleSet() && collapse">

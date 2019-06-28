@@ -26,10 +26,7 @@ Bahmni.Appointments.Constants = (function () {
         appointmentStatusList: [ "Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed" ],
         regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/,
         privilegeManageAppointments: 'app:appointments:manageAppointmentsTab',
-        privilegeForAdmin: 'app:appointments:adminTab',
-        privilegeOwnAppointments: 'Manage Own Appointments',
-        availableForAppointments: 'Available for appointments',
-        providerResponses: { ACCEPTED: "ACCEPTED", REJECTED: "REJECTED", TENTATIVE: "TENTATIVE", CANCELLED: "CANCELLED", AWAITING: "AWAITING" }
+        privilegeForAdmin: 'app:appointments:adminTab'
     };
 })();
 

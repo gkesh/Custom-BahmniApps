@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate',
+        'orderSetService', '$q', 'locationService', 'spinner',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-                  orderSetService, $q, locationService, spinner, $translate) {
+                  orderSetService, $q, locationService, spinner) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -466,14 +466,14 @@ angular.module('bahmni.clinical')
             var contextChange = function () {
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if (isSameDrugBeingDiscontinuedAndOrdered()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)};
+                    return {allow: false, errorMessage: errorMessages.discontinuingAndOrderingSameDrug};
                 }
                 if ($scope.incompleteDrugOrders()) {
                     $scope.formInvalid = true;
                     return {allow: false};
                 }
                 if ($scope.unaddedDrugOrders()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.incompleteForm)};
+                    return {allow: false, errorMessage: errorMessages.incompleteForm};
                 }
                 return {allow: true};
             };
@@ -588,7 +588,7 @@ angular.module('bahmni.clinical')
                         var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
                         if (discontinuedDrug) {
                             removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
-                            removableOrder.dateActivated = null;
+                            removableOrder.dateActivated = discontinuedDrug.dateStopped;
                             removableOrder.scheduledDate = discontinuedDrug.dateStopped;
                             removableOrder.dateStopped = discontinuedDrug.dateStopped;
 
