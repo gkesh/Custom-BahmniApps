@@ -46,6 +46,30 @@
                             </div>
                         </div>
                     </section>
+                    <section class="observation-section">
+                        <div class="registraion_legend">
+                            <span class="mylegend" >Insurance Detail</span>
+                        </div>
+                        <div class="form-field fl">
+                            <div class="form-field fl">
+                                <div class="field-attribute">
+                                    <label for="NHISNumber">NHIS Number: </label>
+                                </div>
+                                <div class="field-value">
+                                    <label class="control-label"><strong>{{::patient['NHIS Number']}} </strong></label>
+                                </div>
+                            </div>
+                            <div class="form-field fl">
+                                <div class="field-attribute">
+                                    <label for="Balance">Balance: </label>
+                                </div>
+                                <div class="field-value">
+                                    <label class="control-label"><strong>{{userEligibility}}</strong></label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
                 </div>
                 <div class="submit-btn-container">
                     <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>

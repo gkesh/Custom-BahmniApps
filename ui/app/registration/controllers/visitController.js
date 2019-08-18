@@ -20,6 +20,8 @@ angular.module('bahmni.registration')
                     $scope.patient = openmrsPatientMapper.map(openMRSPatient);
                     $scope.patient.name = openMRSPatient.patient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
+                    isMemberEligible( $scope.patient['NHIS Number']);
+
                 });
                 return deferred.promise;
             };
@@ -324,4 +326,17 @@ angular.module('bahmni.registration')
                         getConceptSet();
                     });
                 }));
+            var isMemberEligible = function (NHIS_number) {
+                visitService.isEligible(NHIS_number).then(function (response) {
+                    console.log("response in controller");
+                    console.log(response);
+                    console.log(response.data.eligibilityBalance[0].benefitBalance);
+                    $scope.userEligibility=response.data.eligibilityBalance[0].benefitBalance;
+                }).catch(function (error) {
+                    console.log("err in controller");
+                    console.log(error);
+                    $scope.userEligibility=error.statusText;
+                });
+            };
+
         }]);
