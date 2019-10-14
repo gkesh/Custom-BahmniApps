@@ -60,21 +60,11 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
         };
+
         this.isEligible= function (NHIS_number) {
-            return new Promise(function (resolve,reject) {
-                var context= {
-                    "chfID":NHIS_number
-                };
-                $http.post("https://192.168.33.20/insurance-integration/check/eligibility",context).then(function (response) {
-                   // console.log(Bahmni.Common.Constants.eligibleUrl)
-                    console.log("RESPONSE");
-                    console.log(response);
-                    resolve(response);
-                }).catch(function (error) {
-                    console.log("error");
-                    console.log(error)
-                    reject(error);
-                });
-            });
+            return $http.get(Bahmni.Common.Constants.eligibleUrl + '/' + NHIS_number , {
+                       withCredentials: true
+                   });
+
         };
     }]);
