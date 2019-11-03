@@ -24,8 +24,6 @@ angular.module('bahmni.registration')
                         isMemberEligible($scope.patient['NHIS Number']);
                     }
                 });
-                //     isMemberEligible($scope.patient['NHIS Number']);
-                // });
                 return deferred.promise;
             };
 
