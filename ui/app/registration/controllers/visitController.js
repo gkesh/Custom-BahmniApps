@@ -21,12 +21,12 @@ angular.module('bahmni.registration')
                     $scope.patient.name = openMRSPatient.patient.person.names[0].display;
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
                     if ($scope.patient['NHIS Number'] != null) {
-                        isMemberEligible( $scope.patient['NHIS Number'])};
-
-                        });
+                        isMemberEligible($scope.patient['NHIS Number']);
+                    }
+                });
                 //     isMemberEligible($scope.patient['NHIS Number']);
                 // });
-                return deferred.promise;coded
+                return deferred.promise;
             };
 
             var getActiveEncounter = function () {
@@ -329,15 +329,13 @@ angular.module('bahmni.registration')
                         getConceptSet();
                     });
                 }));
-            var isMemberEligible = function (NHIS_number) {
-                visitService.isEligible(NHIS_number).then(function (response) {
+            var isMemberEligible = function (nhisNumber) {
+                visitService.isEligible(nhisNumber).then(function (response) {
                     console.log("response in controller");
                     console.log(response);
-                        $scope.userBalance=response.data.eligibilityBalance[0].benefitBalance;
-                        $scope.userCategory=response.data.eligibilityBalance[0].category;
-                        $scope.validDate=response.data.eligibilityBalance[0].validDate;
-
+                    $scope.userBalance = response.data.eligibilityBalance[0].benefitBalance;
+                    $scope.userCategory = response.data.eligibilityBalance[0].category;
+                    $scope.validDate = response.data.eligibilityBalance[0].validDate;
                 });
             };
-
         }]);

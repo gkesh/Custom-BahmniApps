@@ -61,10 +61,9 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.isEligible= function (NHIS_number) {
-            return $http.get(Bahmni.Common.Constants.eligibleUrl + '/' + NHIS_number , {
-                       withCredentials: true
-                   });
-
+        this.isEligible = function (nhisNumber) {
+            return $http.get(Bahmni.Common.Constants.eligibleUrl + '/' + nhisNumber, {
+                withCredentials: true
+            });
         };
     }]);

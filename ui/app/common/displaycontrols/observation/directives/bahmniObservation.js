@@ -79,7 +79,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 });
                             } else if ($scope.enrollment) {
                                 $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsIgnoreList).then(function (response) {
-<<<<<<< HEAD
                                     mapObservation(response.data, $scope.config);
                                 });
                             } else {
@@ -88,16 +87,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                                     $scope.config.obsIgnoreList, null).then(function (response) {
                                         mapObservation(response.data, $scope.config);
                                     });
-=======
-                                    mapObservation(response.data, $scope.config);
-                                });
-                            } else {
-                                $scope.initialization = observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
-                                    $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                    $scope.config.obsIgnoreList, null).then(function (response) {
-                                    mapObservation(response.data, $scope.config);
-                                });
->>>>>>> 50cf65f27e2828dd9e4ebc6ba45fdd8a8062095a
                             }
                         }
                     }
