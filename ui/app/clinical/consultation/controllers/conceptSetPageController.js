@@ -34,8 +34,8 @@ angular.module('bahmni.clinical')
                         if (filterObsTemplate) {
                             var filteredTemplates = [];
                             for (var i = 0; i < allTemplates.length; i++) {
-                                if (availableTemplates.includes(availableTemplates[i].name.name)) {
-                                    filteredTemplates.push(availableTemplates[i]);
+                                if (availableTemplates.includes(allTemplates[i].name.name)) {
+                                    filteredTemplates.push(allTemplates[i]);
                                 }
                             }
                             createConceptSections(filteredTemplates);
