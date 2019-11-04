@@ -61,30 +61,44 @@
                             </div>
                             <div class="form-field fl">
                                 <div class="field-attribute">
-                                    <label for="Balance">Balance: </label>
+                                    <label for="Category">Category: </label>
                                 </div>
                                 <div class="field-value">
-                                    <label class="control-label"><strong>{{userBalance}}</strong></label>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"
+                                            ng-repeat="values in eligibleData">
+                                            <label class="control-label"><strong>{{values.category}}</strong></label>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                             <div class="form-field fl">
                                 <div class="field-attribute">
-                                    <label for="Category">Category: </label>
+                                    <label for="Balance">Balance: </label>
                                 </div>
                                 <div class="field-value">
-                                    <label class="control-label"><strong>{{userCategory}}</strong></label>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"
+                                            ng-repeat="values in eligibleData">
+                                    <label class="control-label"><strong>{{values.benefitBalance}}</strong></label>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
+
                             <div class="form-field fl">
                                 <div class="field-attribute">
                                     <label for="ValidDate">Valid Date: </label>
                                 </div>
                                 <div class="field-value">
-                                    <label class="control-label"><strong>{{validDate}}</strong></label>
+                                    <ul class="list-group">
+                                        <li class="list-group-item"
+                                            ng-repeat="values in eligibleData">
+                                    <label class="control-label"><strong>{{values.validDate}}</strong></label>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-
-
                         </div>
                     </section>
                 </div>

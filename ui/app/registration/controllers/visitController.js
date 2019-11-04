@@ -331,9 +331,7 @@ angular.module('bahmni.registration')
                 visitService.isEligible(nhisNumber).then(function (response) {
                     console.log("response in controller");
                     console.log(response);
-                    $scope.userBalance = response.data.eligibilityBalance[0].benefitBalance;
-                    $scope.userCategory = response.data.eligibilityBalance[0].category;
-                    $scope.validDate = response.data.eligibilityBalance[0].validDate;
+                    $scope.eligibleData = response.data.eligibilityBalance;
                 });
             };
         }]);
