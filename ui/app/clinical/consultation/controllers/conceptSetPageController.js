@@ -33,12 +33,11 @@ angular.module('bahmni.clinical')
                         var allTemplates = response.data.results[0].setMembers;
                         if (filterObsTemplate) {
                             var filteredTemplates = [];
-                            for(var i = 0; i < allTemplates.length; i++){
-                                 if (availableTemplates.includes(allTemplates[i].name.name)) {
+                            for (var i = 0; i < allTemplates.length; i++) {
+                                if (availableTemplates.includes(allTemplates[i].name.name)) {
                                     filteredTemplates.push(allTemplates[i]);
-                                 }
+                                }
                             }
-                            
                             createConceptSections(filteredTemplates);
                         } else {
                             createConceptSections(allTemplates);
@@ -271,7 +270,11 @@ angular.module('bahmni.clinical')
                 } else {
                     template.toggle();
                     template.klass = "active";
-                    $scope.consultation.selectedObsTemplate.push(template);
+                    if (index > -1) {
+                        $scope.consultation.selectedObsTemplate[index] = template;
+                    } else {
+                        $scope.consultation.selectedObsTemplate.push(template);
+                    }
                 }
                 $scope.consultation.searchParameter = "";
                 messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: template.label}));

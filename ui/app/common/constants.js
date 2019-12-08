@@ -13,6 +13,8 @@ Bahmni.Common = Bahmni.Common || {};
     var BACTERIOLOGY = RESTWS_V1;
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
+    var localUrl = "https://192.168.33.20/";
+    var INSURANCE_URL = RESTWS_V1 + "/imis";
 
     var serverErrorMessages = [
         {
@@ -62,6 +64,7 @@ Bahmni.Common = Bahmni.Common || {};
     authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" + (localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "")] = "LoginLocationToEncounterTypeMapping";
 
     Bahmni.Common.Constants = {
+        eligibleUrl: INSURANCE_URL + "/eligibility",
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
@@ -110,6 +113,7 @@ Bahmni.Common = Bahmni.Common || {};
         drugImportUrl: BAHMNI_CORE + "/admin/upload/drug",
         labResultsImportUrl: BAHMNI_CORE + "/admin/upload/labResults",
         referenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms",
+        updateReferenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms/new",
         relationshipImportUrl: BAHMNI_CORE + "/admin/upload/relationship",
         conceptSetExportUrl: BAHMNI_CORE + "/admin/export/conceptset?conceptName=:conceptName",
         patientImportUrl: BAHMNI_CORE + "/admin/upload/patient",
@@ -177,9 +181,9 @@ Bahmni.Common = Bahmni.Common || {};
         locationPickerPrivilege: 'app:clinical:locationpicker',
         onBehalfOfPrivilege: 'app:clinical:onbehalf',
         nutritionalConceptName: 'Nutritional Values',
-        messageForNoObservation: "No observations captured for this visit.",
+        messageForNoObservation: "NO_OBSERVATIONS_CAPTURED",
         messageForNoDisposition: "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY",
-        messageForNoFulfillment: "No observations captured for this order.",
+        messageForNoFulfillment: "NO_FULFILMENT_MESSAGE",
         reportsUrl: "/bahmnireports",
         uploadReportTemplateUrl: "/bahmnireports/upload",
         ruledOutdiagnosisStatus: "Ruled Out Diagnosis",
@@ -197,7 +201,7 @@ Bahmni.Common = Bahmni.Common || {};
         passwordPolicyUrl: BAHMNI_CORE + "/globalProperty/passwordPolicyProperties",
         fulfillmentConfiguration: "fulfillment",
         fulfillmentFormSuffix: " Fulfillment Form",
-        noNavigationLinksMessage: "No navigation links available.",
+        noNavigationLinksMessage: "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE",
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1 + "/encountertype",
@@ -251,7 +255,11 @@ Bahmni.Common = Bahmni.Common || {};
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
-        privilegeRequiredErrorMessage: "User is logged in but doesn't have the relevant privilege"
+        privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
+        patientFormsUrl: BAHMNI_CORE + "/patient/{patientUuid}/forms",
+        defaultPossibleRelativeSearchLimit: 10,
+        formBuilderDisplayControlType: "formsV2",
+        formBuilderType: "v2"
     };
 })();
 
