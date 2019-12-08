@@ -368,7 +368,7 @@ describe('patient context', function () {
                     "printing": {
                         "title": "Patient Dashboard",
                         "header": "Patient Summary",
-                        "logo": "../images/nepalEHRLogo.png",
+                        "logo": "../images/bahmniLogo.png",
                         "showNameAndImage": false
                     }
                 }

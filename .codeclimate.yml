@@ -12,8 +12,6 @@ engines:
       - php
   eslint:
     enabled: true
-    config:
-        config: ./.eslintrc
   fixme:
     enabled: true
 ratings:
