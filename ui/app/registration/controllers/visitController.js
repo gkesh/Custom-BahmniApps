@@ -325,13 +325,12 @@ angular.module('bahmni.registration')
                 visitService.isEligible(nhisNumber).then(function (response) {
                     console.log("response in controller");
                     console.log(response);
+                    deferred.resolve(response);
                     $scope.eligibleData = response.data.eligibilityBalance;
-                    return deferred.promise;
-                }).catch(function(error){
-                    deferred.resolve("could not reach to openimis api");
                 });
-            };
+                return deferred.promise;
 
+            };
             spinner.forPromise($q.all([isMemberEligible(),getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
                 .then(function () {
                     getAllForms().then(function () {
