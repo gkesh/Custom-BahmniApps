@@ -319,19 +319,23 @@ angular.module('bahmni.registration')
                         }
                     });
                 }
+            }
+            var isMemberEligible = function (nhisNumber) {
+                var deferred = $q.defer();
+                visitService.isEligible(nhisNumber).then(function (response) {
+                    console.log("response in controller");
+                    console.log(response);
+                    $scope.eligibleData = response.data.eligibilityBalance;
+                    return deferred.promise;
+                }).catch(function(error){
+                    deferred.resolve("could not reach to openimis api");
+                });
             };
 
-            spinner.forPromise($q.all([getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
+            spinner.forPromise($q.all([isMemberEligible(),getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
                 .then(function () {
                     getAllForms().then(function () {
                         getConceptSet();
                     });
                 }));
-            var isMemberEligible = function (nhisNumber) {
-                visitService.isEligible(nhisNumber).then(function (response) {
-                    console.log("response in controller");
-                    console.log(response);
-                    $scope.eligibleData = response.data.eligibilityBalance;
-                });
-            };
         }]);
