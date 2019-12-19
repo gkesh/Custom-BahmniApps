@@ -12,7 +12,6 @@ describe('patient context', function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
         provide = $provide;
 
         $provide.value('spinner', spinner);
@@ -368,7 +367,7 @@ describe('patient context', function () {
                     "printing": {
                         "title": "Patient Dashboard",
                         "header": "Patient Summary",
-                        "logo": "../images/nepalEHRLogo.png",
+                        "logo": "../images/bahmniLogo.png",
                         "showNameAndImage": false
                     }
                 }

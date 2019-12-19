@@ -104,6 +104,7 @@ angular.module('bahmni.common.displaycontrol.forms')
 
             return {
                 restrict: 'E',
+                controller: controller,
                 link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",
                 scope: {

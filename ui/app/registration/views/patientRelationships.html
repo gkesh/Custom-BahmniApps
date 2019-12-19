@@ -26,8 +26,8 @@
         <div class="row" ng-repeat="newRelationship in patient.newlyAddedRelationships">
             <div class="col col1 form-field">
                 <div class="field-attribute showOn-small-screen">
-                    <label>Relationship Type
-                        <span class="asterick">*</span>
+                        <label>{{ 'REGISTRATION_RELATION_TYPE_LABEL'|translate }}
+                            <span class="asterick">*</span>
                     </label>
                 </div>
                 <div class="field-value">
@@ -73,12 +73,6 @@
                     <div ng-show="enableNepaliCalendar"  class="field-value">
                         <input class="nepali-datepicker" npdatepicker type="text" ng-model="newRelationship.endDateBS" ng-change="updateRelationshipDate(newRelationship)">
                     </div>
-                </div>
-                <div ng-show="!enableNepaliCalendar" class="field-value">
-                    <input type="date" ng-model="newRelationship.endDate" ng-disabled="!newRelationship.relationshipType.uuid" />
-                </div>
-                <div ng-if="enableNepaliCalendar" class="field-value">
-                    <input class="nepali-datepicker" npdatepicker type="text" ng-model="newRelationship.endDateBS" ng-change="updateRelationshipDate()">
                 </div>
             </div>
             <div class="col col4">
