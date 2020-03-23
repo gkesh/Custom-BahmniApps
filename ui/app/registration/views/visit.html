@@ -46,6 +46,7 @@
                             </div>
                         </div>
                     </section>
+                    <div ng-if="nhisID != null">
                     <section class="observation-section">
                         <div class="registraion_legend">
                             <span class="mylegend" >Insurance Detail</span>
@@ -56,7 +57,7 @@
                                     <label for="NHISNumber">NHIS Number: </label>
                                 </div>
                                 <div class="field-value">
-                                    <label class="control-label"><strong>{{::patient['NHIS Number']}} </strong></label>
+                                    <label class="control-label"><strong>{{nhisID}} </strong></label>
                                 </div>
                             </div>
                             <div class="form-field fl">
@@ -101,6 +102,10 @@
                             </div>
                         </div>
                     </section>
+                    </div>
+                    <div ng-if="nhisID == null">
+                        Patient is not registered in IMIS System
+                    </div>
                 </div>
                 <div class="submit-btn-container">
                     <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>

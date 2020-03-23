@@ -321,13 +321,22 @@ angular.module('bahmni.registration')
                 }
             }
             var isMemberEligible = function (nhisNumber) {
+
                 var deferred = $q.defer();
                 visitService.isEligible(nhisNumber).then(function (response) {
-                    console.log("response in controller");
-                    console.log(response);
-                    deferred.resolve(response);
-                    $scope.eligibleData = response.data.eligibilityBalance;
-                });
+                    console.log("after getting response")
+                    if (response.status == 500 || response.status==404) {
+                        $scope.spinner = false;
+                        console.log('Encountered server error');
+                    }else {
+                        console.log("response in controller");
+                        console.log(response);
+                        deferred.resolve(response);
+                        $scope.nhisID = response.data.nhisId;
+                        $scope.eligibleData = response.data.eligibilityBalance;
+                    }});
+
+
                 return deferred.promise;
 
             };
