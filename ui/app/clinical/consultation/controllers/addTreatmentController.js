@@ -510,6 +510,7 @@ angular.module('bahmni.clinical')
                             form: selectedItem.drug.dosageForm && selectedItem.drug.dosageForm.display,
                             uuid: selectedItem.drug.uuid
                         });
+                        productStock(selectedItem.drug.uuid);
                         selectedItem = null;
                         return;
                     }
@@ -756,4 +757,10 @@ angular.module('bahmni.clinical')
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
             };
             init();
+            var productStock = function (uuid) {
+                orderSetService.getStock(uuid).then(function (response) {
+                    console.log("after getting response")
+                    $scope.actual_stock = response.data.actual_stock;
+                });
+            };
         }]);

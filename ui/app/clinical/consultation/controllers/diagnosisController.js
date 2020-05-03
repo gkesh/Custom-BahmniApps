@@ -38,6 +38,8 @@ angular.module('bahmni.clinical')
 
             $scope.getDiagnosis = function (params) {
                 return diagnosisService.getAllFor(params.term).then(mapConcept);
+                console.log("uuuuuuuuuuuuuu")
+                console.log("dddddd" + diagnosisService.getAllFor(params.term));
             };
 
             var _canAdd = function (diagnosis) {
@@ -80,7 +82,7 @@ angular.module('bahmni.clinical')
             var init = function () {
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
                 $scope.allowOnlyCodedDiagnosis = appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
-                                                 appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
+                    appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
                 $scope.hideConditions = appService.getAppDescriptor().getConfigValue("hideConditions");
                 addPlaceHolderDiagnosis();
                 diagnosisService.getDiagnosisConceptSet().then(function (result) {
@@ -125,7 +127,7 @@ angular.module('bahmni.clinical')
                 var isValidConditionForm = ($scope.consultation.condition.isEmpty() || $scope.consultation.condition.isValid());
                 return {
                     allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0
-                    && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
+                        && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
                     errorMessage: $scope.errorMessage
                 };
             };
@@ -309,7 +311,7 @@ angular.module('bahmni.clinical')
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'Deleted');
                         var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
-                                          $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                            $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         return reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {
