@@ -38,8 +38,6 @@ angular.module('bahmni.clinical')
 
             $scope.getDiagnosis = function (params) {
                 return diagnosisService.getAllFor(params.term).then(mapConcept);
-                console.log("uuuuuuuuuuuuuu")
-                console.log("dddddd" + diagnosisService.getAllFor(params.term));
             };
 
             var _canAdd = function (diagnosis) {

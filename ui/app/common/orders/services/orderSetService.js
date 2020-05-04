@@ -49,7 +49,6 @@ angular.module('bahmni.common.orders')
             return (value < leastPrescribableDose) ? leastPrescribableDose : value;
         };
         this.getStock = function (uuid) {
-            console.log("from service" + uuid)
             return $http.get(Bahmni.Clinical.Constants.productUrl + uuid, {
                 withCredentials: true
             });

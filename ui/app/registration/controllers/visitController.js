@@ -319,28 +319,23 @@ angular.module('bahmni.registration')
                         }
                     });
                 }
-            }
-            var isMemberEligible = function (nhisNumber) {
+            };
 
+            var isMemberEligible = function (nhisNumber) {
                 var deferred = $q.defer();
                 visitService.isEligible(nhisNumber).then(function (response) {
-                    console.log("after getting response")
-                    if (response.status == 500 || response.status==404) {
+                    if (response.status == 500 || response.status == 404) {
                         $scope.spinner = false;
                         console.log('Encountered server error');
-                    }else {
-                        console.log("response in controller");
-                        console.log(response);
+                    } else {
                         deferred.resolve(response);
                         $scope.nhisID = response.data.nhisId;
                         $scope.eligibleData = response.data.eligibilityBalance;
-                    }});
-
-
+                    }
+                });
                 return deferred.promise;
-
             };
-            spinner.forPromise($q.all([isMemberEligible(),getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
+            spinner.forPromise($q.all([isMemberEligible(), getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
                 .then(function () {
                     getAllForms().then(function () {
                         getConceptSet();
