@@ -3,10 +3,10 @@
 angular.module('bahmni.registration')
     .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams',
         '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService',
-        'messagingService', '$translate', 'auditLogService',
+        'messagingService', '$translate', 'auditLogService', 'patientService',
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
                   $bahmniCookieStore, appService, visitService, sessionService, encounterService,
-                  messagingService, $translate, auditLogService) {
+                  messagingService, $translate, auditLogService, patientService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -81,7 +81,7 @@ angular.module('bahmni.registration')
 
                 $scope.visitControl = new Bahmni.Common.VisitControl(
                     $rootScope.regEncounterConfiguration.getVisitTypesAsArray(),
-                    defaultVisitType, encounterService, $translate, visitService
+                    defaultVisitType, encounterService, $translate, visitService, patientService
                 );
 
                 $scope.visitControl.onStartVisit = function () {
@@ -128,10 +128,45 @@ angular.module('bahmni.registration')
                     }
                 };
 
+                var isValid = function (nhisNumber) {
+                    return new Promise(function (resolve, reject) {
+                        patientService.getValid(nhisNumber).then(function (response) {
+                            if (response.data.nhisid) {
+                                // resolve();
+                                return true;
+                            }
+                        });
+                    });
+                };
+                var isUnique = function (nhisNumber) {
+                    return new Promise(function (resolve, reject) {
+                        patientService.getUnique(nhisNumber).then(function (response) {
+                            if (response.data) {
+                                console.log(response.data);
+                                // resolve();
+                                return true;
+                            }
+                        });
+                    });
+                };
                 var goToVisitPage = function (patientData) {
-                    $scope.patient.uuid = patientData.patient.uuid;
-                    $scope.patient.name = patientData.patient.person.names[0].display;
-                    $location.path("/patient/" + patientData.patient.uuid + "/visit");
+                    $scope.patient.nhisNumber = patientData.patient.person.attributes[3].display;
+                    var uniqueVal = isUnique($scope.patient.nhisNumber);
+                    var validateVal = isValid($scope.patient.nhisNumber);
+                    validateVal.then(function (response) {
+                        uniqueVal.then(function (response) {
+                            console.log("I am here");
+                            $scope.patient.uuid = patientData.patient.uuid;
+                            $scope.patient.name = patientData.patient.person.names[0].display;
+                            $location.path("/patient/" + patientData.patient.uuid + "/visit");
+                        }).catch(function (error) {
+                            console.log(error);
+                            messagingService.showMessage("error", "NHIS_NUMBER_NOT_UNIQUE");
+                        });
+                    }).catch(function (error) {
+                        console.log(error);
+                        messagingService.showMessage("error", "NHIS_NUMBER_INVALID");
+                    });
                 };
 
                 var isEmptyVisitLocation = function () {

@@ -65,6 +65,8 @@ Bahmni.Common = Bahmni.Common || {};
 
     Bahmni.Common.Constants = {
         eligibleUrl: INSURANCE_URL + "/eligibility",
+        validUrl: INSURANCE_URL + "/validate",
+        uniqueUrl: INSURANCE_URL + "/unique",
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",

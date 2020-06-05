@@ -14,7 +14,8 @@
           "primaryContact",
           "secondaryContact",
           "primaryRelative",
-          "secondaryIdentifier"
+          "secondaryIdentifier",
+          "NHIS Number"
         ],
         "name": "autoCompleteFields",
         "description": "auto complete fields in patient create page. eg. givenName, familyName, caste, primaryContact, secondaryContact, primaryRelative, secondaryIdentifier"
@@ -157,6 +158,10 @@
         "primaryContact": {
           "pattern": "[0-9]{8,10}",
           "errorMessage": "Should be 12 characters starting with 91 (country code)"
+        },
+        "NHIS Number": {
+          "pattern": "[0-9]{8,10}",
+          "errorMessage": "Should be 12 characters"
         },
         "givenName": {
           "pattern": "[a-zA-Z]{0,}",

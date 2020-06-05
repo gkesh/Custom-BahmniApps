@@ -27,6 +27,10 @@
                                    ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
 
                 <span ng-if="treatmentConfig.allowNonCodedDrugs()">
+                    <p class="caution" ng-show="messages_caution">
+                    <i class="fa fa-exclamation-circle small"></i>
+                    <span> {{messages_caution}} </span>
+                     </p>
                     <button type="button" ng-model="treatment.isNonCodedDrug"
                             class="fl accept-btn" id="accept-button"
                             ng-click="onAccept()"

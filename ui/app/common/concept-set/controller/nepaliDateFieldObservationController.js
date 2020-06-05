@@ -52,6 +52,9 @@ angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservatio
             observation.selectedDate = date;
         }
     };
+    $scope.clearNepaliDate = function () {
+        $scope.observation.nepaliDate = '';
+    };
 
     var valueCompletelyFilled = function (observation) {
         return (observation.selectedDate != null && observation.selectedTime != null);

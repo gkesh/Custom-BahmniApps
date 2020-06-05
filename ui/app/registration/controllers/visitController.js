@@ -324,17 +324,16 @@ angular.module('bahmni.registration')
             var isMemberEligible = function (nhisNumber) {
                 var deferred = $q.defer();
                 visitService.isEligible(nhisNumber).then(function (response) {
-                    if (response.status == 500 || response.status == 404) {
-                        $scope.spinner = false;
-                        console.log('Encountered server error');
-                    } else {
-                        deferred.resolve(response);
+                    if (response) {
                         $scope.nhisID = response.data.nhisId;
                         $scope.eligibleData = response.data.eligibilityBalance;
+                        deferred.resolve(response);
+                    } else {
+                        deferred.resolve();
                     }
                 });
-                return deferred.promise;
             };
+
             spinner.forPromise($q.all([isMemberEligible(), getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
                 .then(function () {
                     getAllForms().then(function () {

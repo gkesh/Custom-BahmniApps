@@ -214,12 +214,17 @@
                     
                     <div ng-switch-when="datetime">
                         <div data-ng-controller="nepaliDateFieldObservationController" ng-if="enableNepaliCalendar">
-                            <div class="field-value">
-                                <input class="nepali-datepicker" ng-init="initializeNepaliDateTime(observation)"  type="text" max="{{::npToday}}" ng-model="observation.nepaliDate" 
-                                    ng-change="handleNepaliDateTimeUpdate(observation); updateNepaliDateTime(observation);"  
+                            <div class="field-value" style="display: inline-flex">
+                                <input class="nepali-datepicker" ng-init="initializeNepaliDateTime(observation)"  type="text" max="{{::npToday}}" ng-model="observation.nepaliDate"
+                                    ng-change="handleNepaliDateTimeUpdate(observation); updateNepaliDateTime(observation);"
                                     observation="::observation"
                                     allow-future-dates="{{::observation.allowFutureDate}}"
                                     npdatepicker>
+                                <button
+                                        class="fa fa-times-circle fa-adjust fa-2x fa-align-justify"
+                                        ng-if="observation.nepaliDate"
+                                        ng-click="clearNepaliDate()">
+                                </button>
                             </div>
                             <div>
                                 <input type="time" ng-change="updateNepaliDateTime(observation)" observation="::observation" ng-class= "{'illegalValue': !isValid(observation, selectedTime)}" ng-model="observation.selectedTime" ng-disabled="observation.disabled" />

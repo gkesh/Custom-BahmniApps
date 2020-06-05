@@ -79,6 +79,17 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
+        var getValid = function (nhisNumber) {
+            return $http.get(Bahmni.Common.Constants.validUrl + '/' + nhisNumber, {
+                withCredentials: true
+            });
+        };
+
+        var getUnique = function (nhisNumber) {
+            return $http.get(Bahmni.Common.Constants.uniqueUrl + '/' + nhisNumber, {
+                withCredentials: true
+            });
+        };
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
@@ -86,6 +97,9 @@ angular.module('bahmni.registration')
             update: update,
             get: get,
             updateImage: updateImage,
-            searchByNameOrIdentifier: searchByNameOrIdentifier
+            searchByNameOrIdentifier: searchByNameOrIdentifier,
+            getValid: getValid,
+            getUnique: getUnique
         };
     }]);
+
