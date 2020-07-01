@@ -325,8 +325,10 @@ angular.module('bahmni.registration')
                 var deferred = $q.defer();
                 visitService.isEligible(nhisNumber).then(function (response) {
                     if (response) {
-                        $scope.nhisID = response.data.nhisId;
+                        // $scope.nhisID = response.data.nhisId;
+                        $scope.nhisID = nhisNumber;
                         $scope.eligibleData = response.data.eligibilityBalance;
+                        console.log(response);
                         deferred.resolve(response);
                     } else {
                         deferred.resolve();

@@ -128,12 +128,14 @@ angular.module('bahmni.registration')
                     }
                 };
 
-               var isValid = function (nhisNumber) {
+                var isValid = function (nhisNumber) {
                     return new Promise(function (resolve, reject) {
                         patientService.getValid(nhisNumber).then(function (response) {
-                            if (response.data.uuId) {
-                                //resolve();
-                                return true;
+                            if (response.data.givenName) {
+                                console.log(response.data.givenName);
+                                resolve();
+                            } else {
+                                reject();
                             }
                         });
                     });
@@ -144,34 +146,33 @@ angular.module('bahmni.registration')
                         patientService.getUnique(nhisNumber).then(function (response) {
                             if (response.data) {
                                 console.log(response.data);
-                                // resolve();
-                                return true;
+                                resolve();
+                            } else {
+                                reject();
                             }
                         });
                     });
                 };
                 var goToVisitPage = function (patientData) {
-                    if(patientData.patient.person.attributes.length >= 3) {
-                         $scope.patient.nhisNumber = patientData.patient.person.attributes[3].display;
-                        var uniqueVal = isUnique($scope.patient.nhisNumber);
-                        var validateVal = isValid($scope.patient.nhisNumber);
-                        validateVal.then(function (response) {
-                            uniqueVal.then(function (response) {
-                                console.log("I am here");
-                                $scope.patient.uuid = patientData.patient.uuid;
-                                $scope.patient.name = patientData.patient.person.names[0].display;
-                                $location.path("/patient/" + patientData.patient.uuid + "/visit");
+                    var nhisNumber = $scope.patient['NHIS Number'];
+                    if (nhisNumber != null) {
+                        isValid(nhisNumber).then(function (response) {
+                            isUnique(nhisNumber).then(function (response) {
+                                goToNextPage(patientData);
                             }).catch(function (error) {
                                 console.log(error);
-                                messagingService.showMessage("error", "NHIS_NUMBER_NOT_UNIQUE");
+                                messagingService.showMessage("error", "NHIS NUMBER NOT UNIQUE");
                             });
                         }).catch(function (error) {
                             console.log(error);
-                            messagingService.showMessage("error", "NHIS_NUMBER_INVALID");
+                            messagingService.showMessage("error", "NHIS NUMBER IS INVALID");
                         });
                     }
-
-
+                };
+                var goToNextPage = function (patientData) {
+                    $scope.patient.uuid = patientData.patient.uuid;
+                    $scope.patient.name = patientData.patient.person.names[0].display;
+                    $location.path("/patient/" + patientData.patient.uuid + "/visit");
                 };
 
                 var isEmptyVisitLocation = function () {
