@@ -2,8 +2,8 @@
 
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
-        'auditLogService', 'formService',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService) {
+        'auditLogService', 'formService', 'patientServiceStrategy',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService, patientServiceStrategy) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -22,6 +22,7 @@ angular.module('bahmni.registration')
                     $scope.patient.uuid = openMRSPatient.patient.uuid;
                     if ($scope.patient['NHIS Number'] != null) {
                         isMemberEligible($scope.patient['NHIS Number']);
+                        displayInfo($scope.patient['NHIS Number']);
                     }
                 });
                 return deferred.promise;
@@ -328,6 +329,24 @@ angular.module('bahmni.registration')
                         // $scope.nhisID = response.data.nhisId;
                         $scope.nhisID = nhisNumber;
                         $scope.eligibleData = response.data.eligibilityBalance;
+                        console.log(response);
+                        deferred.resolve(response);
+                    } else {
+                        deferred.resolve();
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                    messagingService.showMessage("error", "No Internet connection Could Not fetch Eligibility Detail");
+                    deferred.resolve();
+                });
+            };
+            var displayInfo = function (nhisNumber) {
+                var deferred = $q.defer();
+                patientServiceStrategy.getValid(nhisNumber).then(function (response) {
+                    if (response) {
+                        $scope.familyName = response.data.familyName;
+                        $scope.givenName = response.data.givenName;
+                        $scope.gender = response.data.gender;
                         console.log(response);
                         deferred.resolve(response);
                     } else {

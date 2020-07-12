@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService',
-        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService', '$translate',
+        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService, $translate) {
             var controller = function ($scope) {
                 $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $scope.print = $rootScope.isBeingPrinted || false;
@@ -28,7 +28,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
 
                     if (_.isEmpty($scope.bahmniObservations)) {
-                        $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
+                        $scope.noObsMessage = $translate.instant(Bahmni.Common.Constants.messageForNoObservation);
                         $scope.$emit("no-data-present-event");
                     } else {
                         if (!$scope.showGroupDateTime) {
@@ -50,44 +50,29 @@ angular.module('bahmni.common.displaycontrol.observation')
                 };
 
                 var fetchObservations = function () {
-                    if ($scope.config.formType === Bahmni.Common.Constants.formBuilderDisplayControlType) {
-                        var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
-                        encounterService.findByEncounterUuid($scope.config.encounterUuid, {includeAll: false}).then(function (reponse) {
-                            var encounterTransaction = reponse.data;
-                            var observationsForSelectedForm = _.filter(encounterTransaction.observations, function (obs) {
-                                if (obs.formFieldPath) {
-                                    var obsFormNameAndVersion = getFormNameAndVersion(obs.formFieldPath);
-                                    return obsFormNameAndVersion.formName === $scope.config.formName;
-                                }
-                            });
-                            mapObservation(observationsForSelectedForm);
-                        });
-                        $scope.title = $scope.config.formName;
+                    if ($scope.observations) {
+                        mapObservation($scope.observations, $scope.config);
+                        $scope.isFulfilmentDisplayControl = true;
                     } else {
-                        if ($scope.observations) {
-                            mapObservation($scope.observations, $scope.config);
-                            $scope.isFulfilmentDisplayControl = true;
+                        if ($scope.config.observationUuid) {
+                            $scope.initialization = observationsService.getByUuid($scope.config.observationUuid).then(function (response) {
+                                mapObservation([response.data], $scope.config);
+                            });
+                        } else if ($scope.config.encounterUuid) {
+                            var fetchForEncounter = observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames);
+                            $scope.initialization = fetchForEncounter.then(function (response) {
+                                mapObservation(response.data, $scope.config);
+                            });
+                        } else if ($scope.enrollment) {
+                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsIgnoreList).then(function (response) {
+                                mapObservation(response.data, $scope.config);
+                            });
                         } else {
-                            if ($scope.config.observationUuid) {
-                                $scope.initialization = observationsService.getByUuid($scope.config.observationUuid).then(function (response) {
-                                    mapObservation([response.data], $scope.config);
-                                });
-                            } else if ($scope.config.encounterUuid) {
-                                var fetchForEncounter = observationsService.fetchForEncounter($scope.config.encounterUuid, $scope.config.conceptNames);
-                                $scope.initialization = fetchForEncounter.then(function (response) {
+                            $scope.initialization = observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
+                                $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
+                                $scope.config.obsIgnoreList, null).then(function (response) {
                                     mapObservation(response.data, $scope.config);
                                 });
-                            } else if ($scope.enrollment) {
-                                $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsIgnoreList).then(function (response) {
-                                    mapObservation(response.data, $scope.config);
-                                });
-                            } else {
-                                $scope.initialization = observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
-                                    $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                    $scope.config.obsIgnoreList, null).then(function (response) {
-                                        mapObservation(response.data, $scope.config);
-                                    });
-                            }
                         }
                     }
                 };
