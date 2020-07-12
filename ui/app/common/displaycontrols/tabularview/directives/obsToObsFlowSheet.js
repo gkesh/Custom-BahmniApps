@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService', 'appService',
-    function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService, appService) {
+angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService',
+    function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
         var link = function ($scope, element) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             $scope.isEditable = $scope.config.isEditable;
@@ -24,6 +24,15 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 });
             };
 
+            const removeEmptyRecords = function (records) {
+                records.headers = _.filter(records.headers, function (header) {
+                    return !(_.every(records.rows, function (record) {
+                        return _.isEmpty(record.columns[header.name]);
+                    }));
+                });
+                return records;
+            };
+
             var getObsInFlowSheet = function () {
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.orderByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
@@ -35,6 +44,9 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                         });
                         obsInFlowSheet.headers = _.without(obsInFlowSheet.headers, groupByElement);
                         obsInFlowSheet.headers.unshift(groupByElement);
+                        if ($scope.config.hideEmptyRecords) {
+                            obsInFlowSheet = removeEmptyRecords(obsInFlowSheet);
+                        }
                         $scope.obsTable = obsInFlowSheet;
                         if (_.isEmpty($scope.obsTable.rows)) {
                             $scope.$emit("no-data-present-event");
@@ -122,6 +134,10 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
 
             $scope.isMonthAvailable = function () {
                 return $scope.obsTable.rows[0].columns['Month'] != null;
+            };
+
+            $scope.hasPDFAsValue = function (data) {
+                return data.value ? data.value.indexOf('.pdf') > 0 : false;
             };
 
             spinner.forPromise(init(), element);

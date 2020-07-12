@@ -127,49 +127,7 @@ angular.module('bahmni.registration')
                         $window.location.href = forwardUrl;
                     }
                 };
-
-                var isValid = function (nhisNumber) {
-                    return new Promise(function (resolve, reject) {
-                        patientService.getValid(nhisNumber).then(function (response) {
-                            if (response.data.givenName) {
-                                console.log(response.data.givenName);
-                                resolve();
-                            } else {
-                                reject();
-                            }
-                        });
-                    });
-                };
-
-                var isUnique = function (nhisNumber) {
-                    return new Promise(function (resolve, reject) {
-                        patientService.getUnique(nhisNumber).then(function (response) {
-                            if (response.data) {
-                                console.log(response.data);
-                                resolve();
-                            } else {
-                                reject();
-                            }
-                        });
-                    });
-                };
                 var goToVisitPage = function (patientData) {
-                    var nhisNumber = $scope.patient['NHIS Number'];
-                    if (nhisNumber != null) {
-                        isValid(nhisNumber).then(function (response) {
-                            isUnique(nhisNumber).then(function (response) {
-                                goToNextPage(patientData);
-                            }).catch(function (error) {
-                                console.log(error);
-                                messagingService.showMessage("error", "NHIS NUMBER NOT UNIQUE");
-                            });
-                        }).catch(function (error) {
-                            console.log(error);
-                            messagingService.showMessage("error", "NHIS NUMBER IS INVALID");
-                        });
-                    }
-                };
-                var goToNextPage = function (patientData) {
                     $scope.patient.uuid = patientData.patient.uuid;
                     $scope.patient.name = patientData.patient.person.names[0].display;
                     $location.path("/patient/" + patientData.patient.uuid + "/visit");

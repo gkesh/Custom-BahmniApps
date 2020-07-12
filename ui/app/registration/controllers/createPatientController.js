@@ -51,32 +51,9 @@ angular.module('bahmni.registration')
                     }).value();
                 };
 
-                var isDateType = function (personAttributeType) {
-                    return personAttributeType.format === "org.openmrs.util.AttributableDate";
-                };
-
-                var isDefaultValueToday = function (personAttributeType) {
-                    if (defaults[personAttributeType.name].toLowerCase() === "today") {
-                        return true;
-                    }
-                    return false;
-                };
-
-                var setDefaultValue = function (personAttributeType) {
-                    if (isDefaultValueToday(personAttributeType)) {
-                        $scope.patient[personAttributeType.name] = new Date();
-                    }
-                    else {
-                        $scope.patient[personAttributeType.name] = '';
-                    }
-                };
-
-                var defaultsWithAnswers = _.chain(personAttributeTypes)
+                _.chain(personAttributeTypes)
                     .filter(hasDefaultAnswer)
-                    .each(setDefaultAnswer).value();
-
-                _.chain(defaultsWithAnswers).filter(isConcept).each(setDefaultConcept).value();
-                _.chain(defaultsWithAnswers).filter(isDateType).each(setDefaultValue).value();
+                    .each(setDefaultAnswer).filter(isConcept).each(setDefaultConcept).value();
             };
 
             var expandSectionsWithDefaultValue = function () {
@@ -94,6 +71,7 @@ angular.module('bahmni.registration')
                 expandSectionsWithDefaultValue();
                 $scope.patientLoaded = true;
             };
+
             init();
 
             var prepopulateFields = function () {
@@ -151,7 +129,9 @@ angular.module('bahmni.registration')
 
             var createPatient = function (jumpAccepted) {
                 return patientService.create($scope.patient, jumpAccepted).then(function (response) {
-                    copyPatientProfileDataToScope(response);
+                    if (response) {
+                        copyPatientProfileDataToScope(response);
+                    }
                 }, function (response) {
                     if (response.status === 412) {
                         var data = _.map(response.data, function (data) {
