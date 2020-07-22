@@ -78,8 +78,6 @@ angular.module('bahmni.registration')
             };
             return $http.post(url, data, config);
         };
-
-
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
