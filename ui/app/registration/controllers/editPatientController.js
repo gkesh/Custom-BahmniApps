@@ -66,13 +66,11 @@ angular.module('bahmni.registration')
                 }
 
                 return spinner.forPromise(patientService.update($scope.patient, $scope.openMRSPatient).then(function (result) {
-                    if (result) {
                         var patientProfileData = result.data;
                         if (!patientProfileData.error) {
                             successCallBack(patientProfileData);
                             $scope.actions.followUpAction(patientProfileData);
                         }
-                    }
                 }));
             };
 

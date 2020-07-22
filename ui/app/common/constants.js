@@ -64,9 +64,6 @@ Bahmni.Common = Bahmni.Common || {};
     authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" + (localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "")] = "LoginLocationToEncounterTypeMapping";
 
     Bahmni.Common.Constants = {
-        eligibleUrl: INSURANCE_URL + "/eligibility",
-        validUrl: INSURANCE_URL + "/validate",
-        uniqueUrl: INSURANCE_URL + "/unique",
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
