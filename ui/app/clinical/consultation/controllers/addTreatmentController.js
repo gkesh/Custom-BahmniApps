@@ -510,8 +510,9 @@ angular.module('bahmni.clinical')
                             form: selectedItem.drug.dosageForm && selectedItem.drug.dosageForm.display,
                             uuid: selectedItem.drug.uuid
                         });
-                        cautionMessage(selectedItem.drug.name);
+                        cautionMessage(selectedItem.drug.nam);
                         productStock(selectedItem.drug.uuid);
+                        console.log(productStock(selectedItem.drug.uuid));
                         selectedItem = null;
                         return;
                     }
@@ -758,13 +759,14 @@ angular.module('bahmni.clinical')
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
             };
             init();
-            var productStock = function (uuid) {
+            let productStock = function (uuid) {
                 orderSetService.getStock(uuid).then(function (response) {
                     console.log("after getting response");
+                    console.log(response.data.actual_stock);
                     $scope.actual_stock = response.data.actual_stock;
                 });
             };
-            var cautionMessage = function (name) {
+            let cautionMessage = function (name) {
                 console.log("NAME");
                 console.log(name);
                 if (name === "Fluoxetine 20mg") {

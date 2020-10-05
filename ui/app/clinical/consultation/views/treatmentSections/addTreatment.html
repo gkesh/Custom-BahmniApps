@@ -212,6 +212,7 @@
                                 <input id="quantity" class="quantity fl" type="number" min="0.1" max = "{{actual_stock}}" step="any"
                                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()"
                                        ng-required="treatment.isDurationRequired"/>
+                                <p class="caution" ng-show="messages_caution">
                             </div>
                         </article>
                         <article class="form-field fl">
