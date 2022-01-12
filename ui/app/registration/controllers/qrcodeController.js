@@ -67,7 +67,7 @@ angular.module('bahmni.registration')
                                 link: getProfileLinkFromUuid,
                                 dob: qrOpenMRSPatient.registrationDateBS,
                                 gender: qrOpenMRSPatient.gender,
-                                address: qrOpenMRSPatient.address.cityVillage + ", " + qrOpenMRSPatient.address.countryDistrict
+                                address: qrOpenMRSPatient.address.cityVillage + ", " + qrOpenMRSPatient.address.countyDistrict
                             }
 
                             $scope.qrPatientLoaded = true;
