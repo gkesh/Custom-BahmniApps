@@ -47,6 +47,18 @@ angular
                     }
                 }
             })
+            .state('qrcode', {
+                url: '/qrcode',
+                views: {
+                    'layout': {templateUrl: 'views/layout.html', controller: 'QRCodeController'},
+                    'content@qrcode': {templateUrl: 'views/qrcode.html'}
+                },
+                resolve: {
+                    initialize: function(initialization) {
+                        return initialization();
+                    }
+                }
+            })
             .state('patient', {
                 url: '/patient/:patientUuid',
                 abstract: true,

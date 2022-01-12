@@ -46,7 +46,9 @@
     "react-dom": "^15.2.1"
   },
   "scripts": {
-    "test": "karma start test/config/karma.conf.js"
+    "test": "karma start test/config/karma.conf.js",
+    "build": "grunt build --force && ./postbuild.sh",
+    "compass": "grunt compass"
   },
   "repository": {
     "type": "git",
@@ -69,6 +71,7 @@
   },
   "dependencies": {
     "hustle": "0.0.0",
+    "jsbarcode": "^3.11.5",
     "sinon": "^1.17.7",
     "webpack": "^4.41.2"
   }

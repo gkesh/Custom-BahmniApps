@@ -24,6 +24,21 @@ angular.module('bahmni.registration')
                 return deferred.promise;
             };
 
+            // Trishuli Implementation
+            var getVisitDepartment = function () {
+                spinner.forPromise(visitService.search(
+                    {
+                        patient: $scope.patient.uuid,
+                        includeInactive: false,
+                        v: "custom:(visitType)"
+                    }
+                ).then(function (response) {
+                    var results = response.data.results;
+                    $scope.visitDepartment = results[0].visitType.display;
+                }));
+            };
+            // Trishuli Implementation End
+
             var getActiveEncounter = function () {
                 var deferred = $q.defer();
                 encounterService.find({
@@ -322,6 +337,7 @@ angular.module('bahmni.registration')
                 .then(function () {
                     getAllForms().then(function () {
                         getConceptSet();
+                        getVisitDepartment();
                     });
                 }));
         }]);

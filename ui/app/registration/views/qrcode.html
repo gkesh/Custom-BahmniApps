@@ -1,0 +1,34 @@
+<section class="qrcode-wrapper container">
+    <section class="reg-qrcode">
+        <article class="qrcode-camera" ng-if="hasCameraConnected">
+            <video id="qrcode-live"></video>
+            <div class="qrcode-actions">
+                <button ng-click="startScan()">Scan QR</button>
+                <button ng-click="resetScan()">Reset</button>
+            </div>
+        </article>
+        <div id="loader" ng-if="qrLoading"></div>
+        <article class="qrcode-patient" ng-if="qrPatientLoaded">
+            <table class="table">
+                <thead>
+                    <th>ID</th>
+                    <th>Patient Name</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                </thead>
+                <tbody>
+                    <td>
+                        <a href="#" ng-click="qrPatient.link()">
+                            {{::qrPatient.id}}
+                        </a>
+                    </td>
+                    <td>{{::qrPatient.name}}</td>
+                    <td>{{::qrPatient.dob}}</td>
+                    <td>{{::qrPatient.gender}}</td>
+                    <td>{{::qrPatient.address}}</td>
+                </tbody>
+            </table>
+        </article>
+    </section>
+</section>

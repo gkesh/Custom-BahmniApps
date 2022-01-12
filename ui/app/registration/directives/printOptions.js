@@ -20,8 +20,18 @@ angular.module('bahmni.registration')
                     return obs;
                 };
 
+                // Trihuli Implementation
+                var getObservationData = function () {
+                    var visitDetails = $scope.observations.filter((observation) => observation.label === "Visit Details")[0];
+                    // Setting Visit Type
+                    $scope.visitType = visitDetails.groupMembers.filter((concept) => concept.label === "Visit Type")[0].value.value;
+                    $scope.visitCharge = $scope.defaultPrint.prices[$scope.visitType];
+                };
+                // Trihuli Implementation End
+
                 $scope.print = function (option) {
-                    return registrationCardPrinter.print(option.templateUrl, $scope.patient, mapRegistrationObservations(), $scope.encounterDateTime);
+                    getObservationData();
+                    return registrationCardPrinter.print(option.templateUrl, $scope.patient, $rootScope.currentUser.username, $scope.visitDepartment, $scope.visitCharge, $scope.visitType, mapRegistrationObservations(), $scope.encounterDateTime);
                 };
 
                 $scope.buttonText = function (option, type) {
